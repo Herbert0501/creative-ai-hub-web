@@ -2,18 +2,9 @@ import styles from "./sidebar.module.scss";
 
 import React from "react";
 
-function ChatAiIcon() {
-  return <img src={ChatAiIcon} alt="Chat AI Icon" />;
-}
-
-function ChatIcon() {
-  return <img src={ChatIcon} alt="Chat Icon" />;
-}
-
-function RoleIcon() {
-  return <img src={RoleIcon} alt="Role Icon" />;
-}
-
+import ChatAiIcon from "./static/icons/chatgpt.svg";
+import ChatIcon from "./static/icons/chat.svg";
+import RoleIcon from "./static/icons/role.svg";
 
 import { useNavigate } from "react-router-dom";
 import { Path } from "@/app/constants";
