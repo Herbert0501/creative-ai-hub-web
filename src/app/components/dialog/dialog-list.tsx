@@ -17,7 +17,7 @@ export function DialogList() {
   const createDialog = (type: number): DialogType => {
     const dialogData = [
       {
-        avatar: "/role/bugstack.png",
+        avatar: "/role/chatgpt.png",
         subTitle: "有什么可以帮你的吗？",
         title: "直接对话",
       },
