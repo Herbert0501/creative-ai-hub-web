@@ -2,6 +2,7 @@
 
 import styles from "./home.module.scss";
 import { Sidebar } from "@/app/components/sidebar/sidebar";
+import { DialogMessage } from "@/app/components/dialog/dialog-message";
 
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import dynamic from "next/dynamic";
@@ -20,13 +21,16 @@ function Screen() {
         config.tightBorder ? styles["tight-container"] : styles.container
       }`}
     >
-      {/* {工具菜单} */}
+      {/* 工具菜单 */}
       <Sidebar />
-      {/* {路由地址} */}
+
+      {/* 路由地址 */}
       <div className={styles["window-content"]}>
         <Routes>
           <Route path={Path.Home} element={<Chat />} />
-          <Route path={Path.Chat} element={<Chat />} />
+          <Route path={Path.Chat} element={<Chat />}>
+            <Route path=":id" element={<DialogMessage />} />
+          </Route>
           <Route path={Path.Role} element={<Role />} />
         </Routes>
       </div>

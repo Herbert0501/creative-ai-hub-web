@@ -1,83 +1,80 @@
 import styles from "./dialog-list.module.scss";
-import { DialogItem } from "@/app/components/dialog/dialog-item";
+import AddIcon from "@/app/static/icons/add.svg";
+import { DialogListItem } from "@/app/components/dialog/dialog-list-item";
 import { DialogType } from "@/types/chat";
 import { DialogResizeableSidebar } from "@/app/components/dialog/dialog-resizable-sidebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
  * 对话框列表
  */
 export function DialogList() {
   const [dialogs, setDialogs] = useState<DialogType[]>([]);
-  const [selected, setSelected] = useState<DialogType>();
+  const [selected, setSelected] = useState<DialogType | null>(null);
+  const navigate = useNavigate();
 
-  // 测试数据
-  const dialog01: DialogType = {
-    avatar: "/role/bugstack.png",
-    dialogId: 123,
-    read: true,
-    subTitle: "写个java冒泡排序?",
-    timestamp: Date.now(),
-    title: "普通对话",
-    count: 1,
+  const createDialog = (type: number): DialogType => {
+    const dialogData = [
+      {
+        avatar: "/role/bugstack.png",
+        subTitle: "有什么可以帮你的吗？",
+        title: "直接对话",
+      },
+      {
+        avatar: "/role/interview.png",
+        subTitle: "请回答一下Java的基础类型有哪些？",
+        title: "面试官",
+      },
+      {
+        avatar: "/role/psychological.png",
+        subTitle: "吹灭别人的灯，不能照亮自己",
+        title: "心里咨询",
+      }
+    ];
+
+    const data = dialogData[type];
+    return {
+      ...data,
+      dialogId: Math.floor(Math.random() * 900) + 100,
+      read: true,
+      timestamp: Date.now(),
+      count: Math.floor(Math.random() * 90),
+    };
   };
 
-  // 测试数据
-  const dialog02: DialogType = {
-    avatar: "/role/interview.png",
-    dialogId: 124,
-    read: true,
-    subTitle: "Hello, how are you?",
-    timestamp: Date.now(),
-    title: "面试官",
-    count: 5,
-  };
+  const handleAddClick = () => {
+    const idx = Math.floor(Math.random() * 3);
+    const newDialog = createDialog(idx);
 
-  dialogs.push(dialog01);
-  dialogs.push(dialog02);
+    setDialogs((prevDialogs) => [newDialog, ...prevDialogs]);
+    setSelected(newDialog);
+  };
 
   return (
-    // DialogResizeableSidebar 用于调整对话栏的大小
     <DialogResizeableSidebar>
       {/*头部操作*/}
       <div className={styles["dialog-head"]}>
         <div className={styles["dialog-search-box"]}>
           <input type="text" placeholder="搜索" />
+          <div className={styles["dialog-search-add"]} onClick={handleAddClick}>
+            <AddIcon />
+          </div>
         </div>
-        <div
-          className={styles["dialog-search-add"]}
-          onClick={() => {
-            alert("创建会话");
-
-            // 心里咨询
-            const dialog03: DialogType = {
-              avatar: "/role/psychological.png",
-              dialogId: 125,
-              read: true,
-              subTitle: "吹灭别人的灯，不能照亮自己",
-              timestamp: Date.now(),
-              title: "心里咨询",
-              count: 100,
-            };
-
-            dialogs.unshift(dialog03);
-
-            // 设置选中，这样也会刷新数据
-            setSelected(dialog03);
-          }}
-        ></div>
       </div>
       {/*对话列表*/}
-      <div>
-        {/*循环遍历数据，当有数据变更时会自动刷新到页面*/}
-        {dialogs.map((dialog, index) => (
-          <DialogItem
+      <div className={styles["dialog-list"]}>
+        {dialogs.map((dialog) => (
+          <DialogListItem
             key={dialog.dialogId}
             dialog={dialog}
             selected={selected?.dialogId === dialog.dialogId}
             onClick={() => {
+              // 点击时跳转到对应的界面，并传递必要参数信息
+              navigate(`/chat/${dialog.dialogId}`, {
+                state: { title: dialog.title },
+              });
               setSelected(dialog);
-              alert("选中对话" + dialog.title);
             }}
           />
         ))}

@@ -1,7 +1,9 @@
-import { Home } from "@/app/pages/home/home";
+import { Home } from "./pages/home/home";
 
-export default function App() {
-  return (
-    <> <Home/> </>
-  );
+export default async function App() {
+    return (
+        <>
+            <Home/>
+        </>
+    )
 }
