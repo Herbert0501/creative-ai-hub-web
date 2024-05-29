@@ -1,4 +1,4 @@
-import { Home } from "./components/home";
+import { Home } from "@/app/pages/home/home";
 
 export default function App() {
   return (

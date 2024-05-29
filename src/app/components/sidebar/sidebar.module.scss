@@ -3,16 +3,15 @@
   width: var(--sidebar-width);
   height: var(--full-height);
   position: relative;
-  background-color: #F5F5F5;
+  background-color: #fffe;
 }
 
 .sidebar-header {
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
+  width: 4rem;
+  height: 3rem;
   position: relative;
-  margin: -50px auto 0;
-  border: #c7c7c7 1px solid;
+  margin: -3.5rem auto 0 ;
+  border-bottom: #c7c7c7 1px solid;
 
   svg {
     width: 100%;  // 使 SVG 图标的宽度与容器宽度一致
@@ -24,7 +23,7 @@
   width: 30px;
   height: 30px;
   position: relative;
-  margin: 24px auto 0;
+  margin: 30px auto 0;
 
   svg {
     width: 100%;  // 使 SVG 图标的宽度与容器宽度一致
@@ -36,7 +35,7 @@
   width: 30px;
   height: 30px;
   position: relative;
-  margin: 15px auto 0;
+  margin: 30px auto 0;
 
   svg {
     width: 100%;  // 使 SVG 图标的宽度与容器宽度一致
