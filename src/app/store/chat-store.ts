@@ -32,7 +32,7 @@ function createChatSession(): ChatSession {
     return {
         id: 0,
         dialog: {
-            avatar: "/role/wali.png",
+            avatar: "/role/chatgpt.png",
             title: "新的对话",
             count: 0,
             subTitle: "请问有什么需要帮助的吗？",
@@ -40,7 +40,7 @@ function createChatSession(): ChatSession {
         },
         messages: [
             {
-                avatar: "/role/wali.png",
+                avatar: "/role/chatgpt.png",
                 content: "请问有什么需要帮助的吗？",
                 message_type: MessageType.Text,
                 time: Date.now(),

@@ -1,80 +1,59 @@
 import styles from "./dialog-list.module.scss";
 import AddIcon from "@/app/static/icons/add.svg";
-import { DialogListItem } from "@/app/components/dialog/dialog-list-item";
-import { DialogType } from "@/types/chat";
+
+import { DialogListItem } from "./dialog-list-item";
 import { DialogResizeableSidebar } from "@/app/components/dialog/dialog-resizable-sidebar";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { userChatStore } from "@/app/store/chat-store";
 
 /**
  * 对话框列表
  */
 export function DialogList() {
-  const [dialogs, setDialogs] = useState<DialogType[]>([]);
-  const [selected, setSelected] = useState<DialogType | null>(null);
   const navigate = useNavigate();
-
-  const createDialog = (type: number): DialogType => {
-    const dialogData = [
-      {
-        avatar: "/role/chatgpt.png",
-        subTitle: "有什么可以帮你的吗？",
-        title: "直接对话",
-      },
-      {
-        avatar: "/role/interview.png",
-        subTitle: "请回答一下Java的基础类型有哪些？",
-        title: "面试官",
-      },
-      {
-        avatar: "/role/psychological.png",
-        subTitle: "吹灭别人的灯，不能照亮自己",
-        title: "心里咨询",
-      }
-    ];
-
-    const data = dialogData[type];
-    return {
-      ...data,
-      dialogId: Math.floor(Math.random() * 900) + 100,
-      read: true,
-      timestamp: Date.now(),
-      count: Math.floor(Math.random() * 90),
-    };
-  };
-
-  const handleAddClick = () => {
-    const idx = Math.floor(Math.random() * 3);
-    const newDialog = createDialog(idx);
-
-    setDialogs((prevDialogs) => [newDialog, ...prevDialogs]);
-    setSelected(newDialog);
-  };
+  const chatStore = userChatStore();
+  const [sessions, currentSessionIndex, selectSession] = userChatStore(
+    (state) => [state.sessions, state.currentSessionIndex, state.selectSession]
+  );
 
   return (
+    // DialogResizeableSidebar 用于调整对话栏的大小
     <DialogResizeableSidebar>
       {/*头部操作*/}
       <div className={styles["dialog-head"]}>
         <div className={styles["dialog-search-box"]}>
           <input type="text" placeholder="搜索" />
-          <div className={styles["dialog-search-add"]} onClick={handleAddClick}>
+          <div
+            className={styles["dialog-search-add"]}
+            onClick={() => {
+              let session = chatStore.openSession();
+              // 点击时跳转到对应的界面，并传递必要参数信息
+              selectSession(0);
+              navigate(`/chat/${session.id}`, {
+                state: { title: session.dialog.title },
+              });
+            }}
+          >
             <AddIcon />
           </div>
         </div>
       </div>
       {/*对话列表*/}
       <div className={styles["dialog-list"]}>
-        {dialogs.map((dialog) => (
+        {sessions.map((session, index) => (
           <DialogListItem
-            key={dialog.dialogId}
-            dialog={dialog}
-            selected={selected?.dialogId === dialog.dialogId}
+            key={session.id}
+            session={session}
+            selected={currentSessionIndex === index}
             onClick={() => {
               // 点击时跳转到对应的界面，并传递必要参数信息
-              navigate(`/chat/${dialog.dialogId}`, {
-                state: { title: dialog.title },
+              selectSession(index);
+              navigate(`/chat/${session.id}`, {
+                state: { title: session.dialog.title },
               });
-              setSelected(dialog);
+            }}
+            onClickDelete={() => {
+              chatStore.deleteSession(index);
             }}
           />
         ))}

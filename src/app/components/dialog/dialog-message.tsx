@@ -49,8 +49,8 @@ export function DialogMessage() {
     };
 
     const newMessage02 = {
-      avatar: "/role/chatgpt.png",
-      content: "`ChatGPT` 接口尚未对接，暂时还不能回复 **！！！**",
+      avatar: "/role/runny-nose.png",
+      content: "`ChatGPT` 接口尚未对接，暂时还不能回复 **！**",
       message_type: MessageType.Text,
       time: Date.now(),
       direction: MessageDirection.Receive,
@@ -65,7 +65,7 @@ export function DialogMessage() {
   // 刷新数据
   useEffect(() => {
     fetchDetail().then((r) => {});
-  }, [id]);
+  }, [fetchDetail, id]);
 
   const clearContextIndex =
     (currentSession.clearContextIndex ?? -1) >= 0
