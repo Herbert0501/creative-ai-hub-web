@@ -3,12 +3,14 @@
 import styles from "./home.module.scss";
 import { Sidebar } from "@/app/components/sidebar/sidebar";
 import { DialogMessage } from "@/app/components/dialog/dialog-message";
+import { useAppConfig } from "@/app/store/config";
+import { RoleDetail } from "@/app/components/role/role-detail";
 
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import dynamic from "next/dynamic";
 import { Path } from "@/app/constants";
 
-import { useAppConfig } from "@/app/store/config";
+
 
 const Chat = dynamic(async () => (await import("../chat/chat")).Chat);
 const Role = dynamic(async () => (await import("../role/role")).Role);
@@ -31,7 +33,9 @@ function Screen() {
           <Route path={Path.Chat} element={<Chat />}>
             <Route path=":id" element={<DialogMessage />} />
           </Route>
-          <Route path={Path.Role} element={<Role />} />
+          <Route path={Path.Role} element={<Role />}>
+            <Route path=":id" element={<RoleDetail />} />
+          </Route>
         </Routes>
       </div>
     </div>

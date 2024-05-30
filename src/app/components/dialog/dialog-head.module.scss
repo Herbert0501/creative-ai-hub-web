@@ -1,0 +1,46 @@
+.dialog-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 15px;
+  cursor: pointer;
+
+  p {
+    margin: 0;
+  }
+  background-color: #ffffff;
+}
+
+.dialog-search-box {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  input {
+    height: 100%;
+    width: 20rem;
+    border: none;
+    background-color: #fffefe;
+    border: 1px solid #eaeaea;
+    outline: none;
+    font-size: 12px;
+    text-align: left;
+}
+}
+
+.dialog-search-add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  margin: auto 1rem;
+  padding: 0;
+  background-color: #2fad55;
+
+  svg {
+    fill: #fff;
+    width: 75%;
+    height: 75%;
+  }
+}

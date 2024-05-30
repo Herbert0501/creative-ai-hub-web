@@ -31,6 +31,7 @@ export function DialogMessage() {
   const title = location.state?.title || "新的对话";
 
   // 也可以通过接口查询数据
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchDetail = async () => {
     const session = await chatStore.currentSession();
     const messages = session?.messages;

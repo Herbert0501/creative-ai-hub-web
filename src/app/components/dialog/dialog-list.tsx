@@ -1,8 +1,9 @@
 import styles from "./dialog-list.module.scss";
-import AddIcon from "@/app/static/icons/add.svg";
 
 import { DialogListItem } from "./dialog-list-item";
 import { DialogResizeableSidebar } from "@/app/components/dialog/dialog-resizable-sidebar";
+import { DialogHead } from "./dialog-head";
+
 import { useNavigate } from "react-router-dom";
 import { userChatStore } from "@/app/store/chat-store";
 
@@ -20,24 +21,7 @@ export function DialogList() {
     // DialogResizeableSidebar 用于调整对话栏的大小
     <DialogResizeableSidebar>
       {/*头部操作*/}
-      <div className={styles["dialog-head"]}>
-        <div className={styles["dialog-search-box"]}>
-          <input type="text" placeholder="搜索" />
-          <div
-            className={styles["dialog-search-add"]}
-            onClick={() => {
-              let session = chatStore.openSession();
-              // 点击时跳转到对应的界面，并传递必要参数信息
-              selectSession(0);
-              navigate(`/chat/${session.id}`, {
-                state: { title: session.dialog.title },
-              });
-            }}
-          >
-            <AddIcon />
-          </div>
-        </div>
-      </div>
+      <DialogHead/>
       {/*对话列表*/}
       <div className={styles["dialog-list"]}>
         {sessions.map((session, index) => (
