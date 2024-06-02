@@ -7,7 +7,8 @@
     flex-direction: column;
   
     .auth-logo {
-      transform: scale(1.4);
+      display: flex;
+      transform: scale(0.5);
     }
   
     .auth-title {

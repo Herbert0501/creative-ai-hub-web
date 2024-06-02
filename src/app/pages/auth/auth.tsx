@@ -14,8 +14,8 @@ export function Auth() {
   const access = useAccessStore();
   return (
     <div className={styles["auth-page"]}>
-      <ChatAIIcon />
-      <div className={styles["auth-title"]}>OpenAIhub 🚀</div>
+      <ChatAIIcon className={styles["auth-logo"]}/>
+      <div className={styles["auth-title"]}>Creative AI Hub 🚀</div>
       <div className={styles["auth-sub-title"]}>
         学习AI开发、掌握AI部署、运用AI提效 💡
       </div>

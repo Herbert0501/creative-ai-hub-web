@@ -1,5 +1,13 @@
 @import "./window.scss";
 
+@font-face {
+  font-family: 'AlibabaPuHuiTi';
+  src: url('../static/fonts/AlibabaPuHuiTi2.0.woff2') format('woff2'),
+       url('../static/fonts/AlibabaPuHuiTi2.0.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @mixin light {
   --theme: light;
 
@@ -89,8 +97,7 @@
 html {
   height: var(--full-height);
 
-  font-family: "Noto Sans SC", "SF Pro SC", "SF Pro Text", "SF Pro Icons",
-    "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family: 'AlibabaPuHuiTi', sans-serif;
 }
 
 body {
