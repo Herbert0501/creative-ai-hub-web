@@ -2,7 +2,7 @@ import { AIVersion } from "@/app/constants";
 import { useAccessStore } from "@/app/store/access";
 import { MessageRole } from "@/types/chat";
 
-const host = "http://zn23m6.natappfree.cc";
+const host = "http://44t4bn.natappfree.cc";
 
 export const getRoleList = () => {
   // 从本地 json 文件获取

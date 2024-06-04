@@ -8,8 +8,9 @@ import RehypeHighlight from "rehype-highlight";
 import { useRef, useState, RefObject, useEffect } from "react";
 import mermaid from "mermaid";
 import React from "react";
-import { useDebouncedCallback, useThrottledCallback } from "use-debounce";
+import { useDebouncedCallback } from "use-debounce";
 import LoadingIcon from "@/app/static/icons/loading.svg";
+
 export function Mermaid(props: { code: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [hasError, setHasError] = useState(false);
@@ -26,7 +27,6 @@ export function Mermaid(props: { code: string }) {
           console.error("[Mermaid] ", e.message);
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.code]);
 
   function viewSvgInNewWindow() {
@@ -60,7 +60,7 @@ export function Mermaid(props: { code: string }) {
   );
 }
 
-export function PreCode(props: { children: any }) {
+export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
   const ref = useRef<HTMLPreElement>(null);
   const refText = ref.current?.innerText;
   const [mermaidCode, setMermaidCode] = useState("");
@@ -75,15 +75,14 @@ export function PreCode(props: { children: any }) {
 
   useEffect(() => {
     setTimeout(renderMermaid, 1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refText]);
+  }, [refText, renderMermaid]);
 
   return (
     <>
       {mermaidCode.length > 0 && (
         <Mermaid code={mermaidCode} key={mermaidCode} />
       )}
-      <pre ref={ref}>
+      <pre ref={ref} {...props}>
         <span className="copy-code-button"></span>
         {props.children}
       </pre>
