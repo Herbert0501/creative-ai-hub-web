@@ -6,6 +6,7 @@ import RoleIcon from "@/app/static/icons/role.svg";
 import MaxIcon from "@/app/static/icons/maximize.svg";
 import MinIcon from "@/app/static/icons/minimize.svg";
 import ExitIcon from "@/app/static/icons/exit.svg";
+import ShopIcon from "@/app/static/icons/shop.svg";
 
 import { useNavigate } from "react-router-dom";
 import { Path } from "@/app/constants";
@@ -62,6 +63,15 @@ export function Sidebar() {
         }}
       >
         <RoleIcon />
+      </div>
+
+      <div
+        className={styles["sidebar-mall"]}
+        onClick={() => {
+          navigate(Path.Sale);
+        }}
+      >
+        <ShopIcon />
       </div>
     </div>
   );
