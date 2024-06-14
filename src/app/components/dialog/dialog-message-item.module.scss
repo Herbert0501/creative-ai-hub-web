@@ -36,6 +36,11 @@
       opacity: 0.9;
     }
   }
+  .date{
+    margin: 4px;
+    text-align: center;
+    font-size: 13px;
+  }
 }
 
 .chat-message-user > .chat-message-container {
@@ -43,7 +48,7 @@
 }
 
 .chat-message-avatar {
-  margin-top: 20px;
+  margin-top: 1rem;
   position: relative;
 
   .chat-message-edit {
@@ -58,7 +63,7 @@
     transition: all ease 0.3s;
 
     button {
-      padding: 7px;
+      padding: 5px;
     }
   }
 }
@@ -76,7 +81,7 @@
   margin-top: 10px;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.05);
-  padding: 10px;
+  padding: 4px 8px;
   font-size: 14px;
   user-select: text;
   word-break: break-word;

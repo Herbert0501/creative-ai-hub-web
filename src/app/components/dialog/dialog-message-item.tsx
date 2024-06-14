@@ -39,55 +39,45 @@ export function DialogMessageItem(props: Props) {
   };
 
   return (
-      <div
-        className={
-          isUser ? styles["chat-message-user"] : styles["chat-message"]
-        }
-      >
-        <div className={styles["chat-message-container"]}>
-          <div className={styles["chat-message-header"]}>
-            <div className={styles["chat-message-avatar"]}>
-              <Avatar
-                shape="square"
-                src={message.avatar}
-                size={30}
-                style={{
-                  borderRadius: "4px",
-                  backgroundColor: "#f6f6f6",
-                }}
+    <div
+      className={isUser ? styles["chat-message-user"] : styles["chat-message"]}
+    >
+      <div className={styles["chat-message-container"]}>
+        <div className={styles["chat-message-avatar"]}>
+          <Avatar src={message.avatar} size={35} />
+        </div>
+        <div className={styles["chat-message-item"]}>
+          <Markdown
+            content={message.content}
+            fontSize={13}
+            parentRef={parentRef}
+            defaultShow={false}
+            loading={message.content.length === 0 && !isUser}
+          />
+        </div>
+        <div className={styles["date"]}>{date}</div>
+        <div className={styles["chat-message-header"]}>
+          <div className={styles["chat-message-edit"]}>
+            <Space>
+              <ChatAction
+                icon={<SyncOutlined />}
+                text="重试"
+                onClick={retryHandle}
               />
-            </div>
-            <div className={styles["chat-message-edit"]}>
-              <Space>
-                <ChatAction
-                  icon={<SyncOutlined />}
-                  text="重试"
-                  onClick={retryHandle}
-                />
-                <ChatAction
-                  icon={<CopyOutlined />}
-                  text="复制"
-                  onClick={copyHandle}
-                />
-                <ChatAction
-                  icon={<DeleteOutlined />}
-                  text="删除"
-                  onClick={deleteHandle}
-                />
-              </Space>
-            </div>
+              <ChatAction
+                icon={<CopyOutlined />}
+                text="复制"
+                onClick={copyHandle}
+              />
+              <ChatAction
+                icon={<DeleteOutlined />}
+                text="删除"
+                onClick={deleteHandle}
+              />
+            </Space>
           </div>
-          <div className={styles["chat-message-item"]}>
-            <Markdown
-              content={message.content}
-              fontSize={14}
-              parentRef={parentRef}
-              defaultShow={false}
-              loading={message.content.length === 0 && !isUser}
-            />
-          </div>
-          <div className={styles["date"]}>{date}</div>
         </div>
       </div>
+    </div>
   );
 }
