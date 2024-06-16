@@ -85,7 +85,7 @@ function formatMessages(messages: Message[]) {
 export function createNewMessage(value: string, role?: MessageRole) {
   return {
     avatar:
-      role !== MessageRole.user ? "/role/chatgpt.png" : "/role/runny-nose.png",
+      role !== MessageRole.user ? "/role/chatgpt.png" : "/role/user.png",
     content: value,
     time: Date.now(),
     role: role || MessageRole.user,
@@ -246,7 +246,7 @@ export const userChatStore = create<ChatStore>()(
 
       createNewMessage(value: string, role?: MessageRole) {
         return {
-          avatar: "/role/runny-nose.png",
+          avatar: "/role/user.png",
           content: value,
           time: Date.now(),
           role: MessageRole.user,

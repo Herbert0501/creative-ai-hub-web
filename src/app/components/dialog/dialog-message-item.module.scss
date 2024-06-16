@@ -36,7 +36,7 @@
       opacity: 0.9;
     }
   }
-  .date{
+  .date {
     margin: 4px;
     text-align: center;
     font-size: 13px;
@@ -47,9 +47,13 @@
   align-items: flex-end;
 }
 
-.chat-message-avatar {
+.chat-message-avatar-ai, .chat-message-avatar-user{
+  display: flex;
   margin-top: 1rem;
+  align-items: center;
+  justify-content: center;
   position: relative;
+  font-size: 13px;
 
   .chat-message-edit {
     position: absolute;
@@ -66,7 +70,16 @@
       padding: 5px;
     }
   }
+
+  .chat-message-username {
+    margin: 3px 5px 0px 5px;
+  }
 }
+
+.chat-message-avatar-user{
+  flex-direction: row-reverse;
+}
+
 
 .chat-message-status {
   font-size: 12px;

@@ -43,8 +43,11 @@ export function DialogMessageItem(props: Props) {
       className={isUser ? styles["chat-message-user"] : styles["chat-message"]}
     >
       <div className={styles["chat-message-container"]}>
-        <div className={styles["chat-message-avatar"]}>
+        <div className={isUser ? styles["chat-message-avatar-user"] : styles["chat-message-avatar-ai"]}>
           <Avatar src={message.avatar} size={35} />
+          <div className={styles["chat-message-username"]}>
+            {isUser ? "User" : "ChatAI"}
+          </div>
         </div>
         <div className={styles["chat-message-item"]}>
           <Markdown
