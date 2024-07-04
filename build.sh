@@ -1,0 +1,1 @@
+docker build -t kangyaocoding/chatai-web-app:1.0 .
