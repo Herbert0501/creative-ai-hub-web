@@ -1,18 +1,18 @@
 .sale {
     display: flex;
     flex-wrap: wrap;
-    font-family: "黑体", sans-serif;
     overflow-y: scroll;
 }
 
 .product {
-    width: 250px;
-    border-radius: 10px;
+    border-radius: 1rem;
+    border: 1px solid #e0e0e0;
     position: relative;
-    margin: 20px auto 0;
     display: block;
     flex-wrap: wrap;
-    background-color: #f8f8f8;
+    background-color: #fff;
+    flex: 1;
+    margin: 2rem;
 }
 
 .product-name {
@@ -72,8 +72,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: var(--window-width);
-    height: var(--full-height);
+    width: 100%;
+    height: 100%;
     background-color: rgba(255, 255, 255, 0.9);
     display: flex;
     justify-content: center;
@@ -83,10 +83,19 @@
 
 .product-pay-weixin {
     position: fixed;
-    margin-top: -210px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14rem;
+    margin-right: 2rem;
     font-size: 18px;
     font-weight: bold;
-    color: #f5f5f5;
+    color: #000000;
+    svg{
+        margin-right: 1rem;
+        width: 15%;
+        height: 15%;
+    }
 }
 
 .product-pay-close {
@@ -104,21 +113,33 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #0ba800;
-    width: 250px;
-    height: 300px;
+    background-color: #fff;
+    width: 300px;
+    height: 350px;
     border-radius: 20px;
+    box-shadow: 0px 0px 30px 15px rgba(0,0,0,0.1);
 }
 
 .product-pay-prompt {
     position: fixed;
     margin-top: 260px;
-    color: #2a2a2a;
+    color: #000000;
     padding: 5px;
     border-radius: 5px;
     font-size: 12px;
+
+    .product-pay-prompt-link{
+        color: #000000;
+        font-weight: bold;
+        font-size: large;
+    }
+    .product-pay-prompt-link:hover{
+        color: #0883D8;
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }
 
 .QRCode {
-    transform: scale(4); /* 放大QRCode的尺寸 */
+    transform: scale(6); /* 放大QRCode的尺寸 */
 }

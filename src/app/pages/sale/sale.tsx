@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { SaleProduct, SaleProductEnum } from "@/types/sale_product";
 import { useAccessStore } from "@/app/store/access";
 import { useNavigate } from "react-router-dom";
+import WeChatPay from "@/app/static/icons/微信支付.svg";
+import Image from "next/image";
 
 export function Sale() {
   const [products, setProducts] = useState<SaleProduct[]>([]);
@@ -78,26 +80,28 @@ export function Sale() {
       ))}
       {showModal && (
         <div className={styles["product-pay"]}>
-          <div className={styles["product-pay-weixin"]}>微信扫码支付</div>
+          <div className={styles["product-pay-weixin"]}>
+            <WeChatPay />
+            <p>微信支付</p>
+          </div>
           <div className={styles["product-pay-url"]}>
             <QRCode value={payUrl} />
           </div>
           <div className={styles["product-pay-close"]}>
-            <div onClick={handleCloseModal}>😁 支付完成，点击关闭。去对话</div>
+            <div onClick={handleCloseModal}>😁 支付完成，点击我关闭</div>
           </div>
           <div className={styles["product-pay-prompt"]}>
-            <span>
-              支付成功，自动充值。可直接去
+            <div>
+              支付成功，自动充值。可直接点击→
               <span
-                style={{ color: "rgb(0,0,0)", fontWeight: "bold" }}
+                className={styles["product-pay-prompt-link"]}
                 onClick={() => {
                   navigate(`/chat`);
                 }}
               >
-                【对话】
+                对话
               </span>
-              使用
-            </span>
+            </div>
           </div>
         </div>
       )}

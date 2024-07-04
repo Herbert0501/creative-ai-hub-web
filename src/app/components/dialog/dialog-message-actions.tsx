@@ -1,7 +1,6 @@
 import { ClearOutlined } from "@ant-design/icons";
 import styles from "@/app/components/dialog/dialog-message-action.module.scss";
 import { Select } from "antd";
-import BreakIcon from "../../icons/break.svg";
 import { userChatStore } from "@/app/store/chat-store";
 import { AIVersion } from "@/app/constants";
 import { SessionConfig } from "@/types/chat";
