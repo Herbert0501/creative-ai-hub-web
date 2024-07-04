@@ -3,21 +3,16 @@
 // 这样可以避免重复编写相同的 CSS 样式规则，提高样式代码的可维护性和可重用性。
 @mixin container {
   background-color: var(--white);
-  border: var(--border-in-light);
-  border-radius: 10px;
   box-shadow: var(--shadow);
   color: var(--black);
   background-color: var(--white);
-  min-width: 600px;
-  min-height: 480px;
-  max-width: 1200px;
 
   display: flex;
   overflow: hidden;
   box-sizing: border-box;
 
-  width: var(--window-width);
-  height: var(--window-height);
+  width: 100%;
+  height: 100%;
 }
 
 .container {
