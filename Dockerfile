@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM atomhub.openatom.cn/library/node:18-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps

@@ -2,7 +2,8 @@ import { AIVersion } from "@/app/constants";
 import { useAccessStore } from "@/app/store/access";
 import { MessageRole } from "@/types/chat";
 
-const apiHostUrl = "http://localhost:8090";
+// 使用相对 URL
+const apiHostUrl = process.env.REACT_APP_API_HOST || "";
 
 export const getRoleList = () => {
   // 从本地 json 文件获取
