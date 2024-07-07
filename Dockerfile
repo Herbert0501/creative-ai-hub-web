@@ -16,8 +16,8 @@ COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 #  fi
 
 RUN yarn config set registry 'https://registry.npmmirror.com/'
-RUN yarn install
 RUN yarn add sharp
+RUN yarn install
 
 # Rebuild the source code only when needed
 FROM base AS builder
