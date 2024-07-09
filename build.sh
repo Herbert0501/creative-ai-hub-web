@@ -1,1 +1,1 @@
-docker build -t kangyaocoding/chatai-web-app:1.0 .
+docker build -t kangyaocoding/creative-ai-hub:1.0 .
