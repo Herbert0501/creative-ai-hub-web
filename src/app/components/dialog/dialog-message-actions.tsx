@@ -81,6 +81,10 @@ export default function DialogMessagesActions(props: {
           { value: AIVersion.GPT_3_5_TURBO_16K, label: "gpt-3.5-turbo-16k" },
           { value: AIVersion.GPT_4, label: "gpt-4" },
           { value: AIVersion.GPT_4_32K, label: "gpt-4-32k" },
+          { value: AIVersion.CHATGLM_TURBO, label: "chatglm_turbo" },
+          { value: AIVersion.GLM_3_5_TURBO, label: "glm-3-turbo" },
+          { value: AIVersion.GLM_4, label: "glm-4" },
+          { value: AIVersion.GLM_4V, label: "glm-4v" },
         ]}
         onChange={(value) => {
           chatStore.updateCurrentSession((session) => {
