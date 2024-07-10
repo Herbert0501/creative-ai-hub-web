@@ -12,9 +12,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <head>
-        <script src="./static/js/tongji_baidu.js" async></script>
-      </head>
       <body>{children}</body>
     </html>
   );
