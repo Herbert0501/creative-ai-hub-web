@@ -1,7 +1,7 @@
 import styles from "./dialog-message-item.module.scss";
 import { Avatar, Space } from "antd";
 import { Message, MessageRole } from "@/types/chat";
-import { RefObject } from "react";
+import { RefObject, useState } from "react"; // 添加 useState
 import { Markdown } from "@/app/components/markdown/markdown";
 import { CopyOutlined, DeleteOutlined, SyncOutlined } from "@ant-design/icons";
 import { ChatAction } from "./dialog-message-actions";
@@ -9,18 +9,11 @@ import dayjs from "dayjs";
 import { userChatStore } from "@/app/store/chat-store";
 import { copyToClipboard } from "@/utils";
 
-/**
- * 用对象封装属性，方便扩展
- */
 interface Props {
   message: Message;
   parentRef?: RefObject<HTMLDivElement>;
 }
 
-/**
- * 对话面板消息元素
- * @constructor
- */
 export function DialogMessageItem(props: Props) {
   const { message, parentRef } = props;
   const chatStore = userChatStore();
@@ -28,11 +21,21 @@ export function DialogMessageItem(props: Props) {
   const date = message?.time
     ? dayjs(message.time).format("YYYY/MM/DD HH:mm:ss")
     : "";
+  const [copied, setCopied] = useState(false); // 添加状态变量 copied
+  const [retry, setretry] = useState(false);
   const retryHandle = () => {
-    chatStore.onRetry();
+    // chatStore.onRetry();
+    setretry(true);
+    setTimeout(() => {
+      setretry(false);
+    }, 2000);
   };
   const copyHandle = async () => {
-    copyToClipboard(message.content);
+    await copyToClipboard(message.content);
+    setCopied(true); // 复制成功后设置 copied 为 true
+    setTimeout(() => {
+      setCopied(false); // 2秒后隐藏提示信息
+    }, 2000);
   };
   const deleteHandle = async () => {
     chatStore.deleteMessage(message);
@@ -43,7 +46,13 @@ export function DialogMessageItem(props: Props) {
       className={isUser ? styles["chat-message-user"] : styles["chat-message"]}
     >
       <div className={styles["chat-message-container"]}>
-        <div className={isUser ? styles["chat-message-avatar-user"] : styles["chat-message-avatar-ai"]}>
+        <div
+          className={
+            isUser
+              ? styles["chat-message-avatar-user"]
+              : styles["chat-message-avatar-ai"]
+          }
+        >
           <Avatar src={message.avatar} size={35} />
           <div className={styles["chat-message-username"]}>
             {isUser ? "User" : "ChatAI"}
@@ -81,6 +90,9 @@ export function DialogMessageItem(props: Props) {
           </div>
         </div>
       </div>
+      {/* 添加浮动提示 */}
+      {copied && <div className={styles["copied-animation"]}>Copied</div>}
+      {retry && <div className={styles["copied-animation"]}>暂未实现</div>}
     </div>
   );
 }

@@ -1,4 +1,6 @@
 @import "./window.scss";
+@import "@/app/styles/markdown.scss";
+@import "highlight.js/styles/github.css";
 
 @font-face {
   font-family: 'AlibabaPuHuiTi';
@@ -294,10 +296,6 @@ pre {
     pointer-events: none;
     opacity: 0;
     transition: all ease 0.3s;
-
-    &:after {
-      content: "copy";
-    }
 
     &:hover {
       opacity: 1;

@@ -93,7 +93,7 @@
   .markdown-body {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    margin: 0;
+    margin: 5px;
     color: var(--color-fg-default);
     background-color: var(--color-canvas-default);
     font-size: 14px;
@@ -212,14 +212,6 @@
     max-width: 100%;
     box-sizing: content-box;
     background-color: var(--color-canvas-default);
-  }
-  
-  .markdown-body code,
-  .markdown-body kbd,
-  .markdown-body pre,
-  .markdown-body samp {
-    font-family: monospace;
-    font-size: 1em;
   }
   
   .markdown-body figure {
@@ -453,15 +445,6 @@
     font-size: 12px;
   }
   
-  .markdown-body pre {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
-      Liberation Mono, monospace;
-    font-size: 12px;
-    word-wrap: normal;
-  }
-  
   .markdown-body .octicon {
     display: inline-block;
     overflow: visible !important;
@@ -521,10 +504,9 @@
   .markdown-body ol,
   .markdown-body dl,
   .markdown-body table,
-  .markdown-body pre,
   .markdown-body details {
     margin-top: 0;
-    margin-bottom: 16px;
+    margin-bottom: 5px;
   }
   
   .markdown-body blockquote > :first-child {
@@ -796,7 +778,7 @@
   .markdown-body tt {
     padding: 0.2em 0.4em;
     margin: 0;
-    font-size: 85%;
+    font-size: 92%;
     white-space: break-spaces;
     background-color: var(--color-neutral-muted);
     border-radius: 6px;
@@ -820,43 +802,11 @@
   }
   
   .markdown-body pre > code {
-    padding: 0;
+    padding: 10px;
     margin: 0;
     word-break: normal;
     white-space: pre;
-    background: transparent;
-    border: 0;
-  }
-  
-  .markdown-body .highlight {
-    margin-bottom: 16px;
-  }
-  
-  .markdown-body .highlight pre {
-    margin-bottom: 0;
-    word-break: normal;
-  }
-  
-  .markdown-body .highlight pre,
-  .markdown-body pre {
-    padding: 16px 16px 8px 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    border-radius: 6px;
-    direction: ltr;
-  }
-  
-  .markdown-body pre code,
-  .markdown-body pre tt {
-    display: inline-block;
-    max-width: 100%;
-    padding: 0;
-    margin: 0;
-    overflow-x: scroll;
-    line-height: inherit;
-    word-wrap: normal;
-    background-color: transparent;
+    background: #fff;
     border: 0;
   }
   

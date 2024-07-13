@@ -1,41 +1,46 @@
-# /usr/local/bin/docker-compose -f /docs/dev-ops/environment/environment-docker-compose.yml up -d
-version: '3.8'
-# docker-compose -f environment-docker-compose.yml up -d
+version: "3"
 services:
-  chatgpt-data-app:
-    image: kangyaocoding/chatai-data-app:1.0
-    container_name: chatgpt-data-app
+  web-app:
+    container_name: web-app
+    image: registry.cn-heyuan.aliyuncs.com/coding_01/creative-ai-hub-web:1.8
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8091:8091"
+      - "3002:3002"
     environment:
-      - TZ=PRC
-      - SERVER_PORT=8091
-      - APP_CONFIG_API_VERSION=v1
-      - APP_CONFIG_CROSS_ORIGIN=*
-      - THREAD_POOL_EXECUTOR_CONFIG_CORE_POOL_SIZE=20
-      - THREAD_POOL_EXECUTOR_CONFIG_MAX_POOL_SIZE=50
-      - THREAD_POOL_EXECUTOR_CONFIG_KEEP_ALIVE_TIME=5000
-      - THREAD_POOL_EXECUTOR_CONFIG_BLOCK_QUEUE_SIZE=5000
-      - THREAD_POOL_EXECUTOR_CONFIG_POLICY=CallerRunsPolicy
-      - CHATGPT_SDK_CONFIG_API_HOST=https://pro-share-api.zcyai.com/
-      - CHATGPT_SDK_CONFIG_API_KEY=sk-PmMVgo7VKyJSBMAPCb4037F53bE84c6b9106Dc939971Ea9b
-      - WX_CONFIG_ORIGINALID=gh_c5ce6e4a0e0e
-      - WX_CONFIG_APPID=wxad979c0307864a66
-      - WX_CONFIG_TOKEN=b8b6
+      - NODE_ENV=production
+      - REACT_APP_API_HOST=http://localhost:8090
     volumes:
-      - ./log:/data/log
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    restart: always
+      - ./data:/app/data
+    networks:
+      - 1panel-network
 
-  chatgpt-web:
-    container_name: chatai-web
-    image: kangyaocoding/chatai-web:1.0
+  api-app:
+    container_name: api-app
+    image: registry.cn-heyuan.aliyuncs.com/coding_01/creative-ai-hub-data:1.8
     ports:
-      - "3001:3001"
+      - "8090:8090"
     environment:
-      - NEXT_PUBLIC_API_HOST_URL=http://localhost:8091
-    restart: always
+      CROSS_ORIGIN: "https://ai.kangyaocoding.top"
+      WHITE_LIST: o3Ez96fFWNn7v9bGnjr-vfEQUh0o
+      GPT_API_HOST: https://4.0.wokaai.com/
+      GPT_API_KEY: sk-Z2hKcfFVaJ3hfv3LC813BdD351A34aA59bA145Bc2aE9BbE2
+      GLM_API_HOST: https://open.bigmodel.cn/
+      GLM_API_KEY: 240330a3f5aedcc641921f1706835d12.8desNYHII4ZWTQNt
+      WX_MCH_ID: 1676819850
+      WX_SECRET_KEY: 6d50fba3afd64e18389987edd2776822
+      WX_NOTIFY_URL: https://ai.kangyaocoding.top/api/v1/sale/pay_notify
+      DB_USERNAME: potter
+      DB_PASSWORD: mysql_05lky01
+      DB_URL: jdbc:mysql://47.113.199.200:3306/openai?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=true
+      SECRET_KEY: FeaQOE8TPnMT4rka+hW0lGFguV15aMPhWRm3NuNBz6U=
+      WECHAT_ORIGINAL_ID: gh_a03f1e42e9cb
+      WECHAT_APP_ID: wx1cf2d2b7cdbfaa99
+      WECHAT_TOKEN: Lcorw8oZruRZ6cYXLQ5
+    networks:
+      - 1panel-network
+
+networks:
+  1panel-network:
+    external: true

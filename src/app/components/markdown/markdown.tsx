@@ -64,6 +64,7 @@ export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
   const ref = useRef<HTMLPreElement>(null);
   const refText = ref.current?.innerText;
   const [mermaidCode, setMermaidCode] = useState("");
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const renderMermaid = useDebouncedCallback(() => {
     if (!ref.current) return;
@@ -77,16 +78,72 @@ export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
     setTimeout(renderMermaid, 1);
   }, [refText, renderMermaid]);
 
+  useEffect(() => {
+    if (copySuccess) {
+      const timer = setTimeout(() => setCopySuccess(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [copySuccess]);
+
+  const copyCodeToClipboard = () => {
+    if (ref.current) {
+      const codeText = ref.current.innerText;
+      navigator.clipboard.writeText(codeText).then(() => {
+        setCopySuccess(true);
+      });
+    }
+  };
+
   return (
-    <>
+    <div style={{ position: "relative" }}>
       {mermaidCode.length > 0 && (
         <Mermaid code={mermaidCode} key={mermaidCode} />
       )}
       <pre ref={ref} {...props}>
-        <span className="copy-code-button"></span>
+        <span className="copy-code-button" onClick={copyCodeToClipboard}>
+          Copy
+        </span>
         {props.children}
       </pre>
-    </>
+      {copySuccess && <div className="copy-success">Copied!</div>}
+      <style jsx>{`
+        .copy-code-button {
+          cursor: pointer;
+          padding: 5px;
+          background: #007bff;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          position: absolute;
+          top: 5px;
+          right: 10px;
+        }
+        .copy-success {
+          position: absolute;
+          top: 0;
+          right: 0;
+          background-color: #04C204;
+          color: white;
+          padding: 5px 10px;
+          border-radius: 5px;
+          animation: floatUp 2s forwards;
+        }
+        @keyframes floatUp {
+          0% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.8;
+            transform: translateY(-40px);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(-80px);
+          }
+        }
+      `}</style>
+    </div>
   );
 }
 
