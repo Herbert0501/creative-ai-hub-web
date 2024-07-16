@@ -74,7 +74,7 @@ function createChatSession(dialog?: {
 }
 
 function formatMessages(messages: Message[]) {
-  // 如果历史消息超过5，只取最新的3个
+  // 如果历史消息超过5，只取最新的5个
   const latestMessages = messages.length > 5 ? messages.slice(-5) : messages; // 获取最新的三个消息，如果 messages 长度小于等于 3，则返回全部消息
   return latestMessages.map(({ content, role }) => ({
     content,

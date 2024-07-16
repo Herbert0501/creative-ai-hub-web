@@ -36,7 +36,7 @@ export function DialogListItem(props: Props) {
             size={"small"}
             color={"#fca7a7"}
           >
-            <Avatar shape={"square"} src={dialog.avatar} size={40} />
+            <Avatar shape={"square"} src={dialog.avatar} size={45} />
           </Badge>
         </Space>
       </div>

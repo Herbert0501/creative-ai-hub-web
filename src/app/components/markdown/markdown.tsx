@@ -100,9 +100,7 @@ export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
         <Mermaid code={mermaidCode} key={mermaidCode} />
       )}
       <pre ref={ref} {...props}>
-        <span className="copy-code-button" onClick={copyCodeToClipboard}>
-          Copy
-        </span>
+        <span className="copy-code-button" onClick={copyCodeToClipboard}></span>
         {props.children}
       </pre>
       {copySuccess && <div className="copy-success">Copied!</div>}
@@ -118,11 +116,14 @@ export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
           top: 5px;
           right: 10px;
         }
+        .copy-code-button::after {
+          content: "Copy";
+        }
         .copy-success {
           position: absolute;
           top: 0;
           right: 0;
-          background-color: #04C204;
+          background-color: #04c204;
           color: white;
           padding: 5px 10px;
           border-radius: 5px;

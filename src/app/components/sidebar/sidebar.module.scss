@@ -4,68 +4,59 @@
   height: var(--full-height);
   position: relative;
   background-color: #fff;
-}
 
-.sidebar-header {
-  width: 60px;
-  height: 40px;
-  position: relative;
-  margin: 20px auto 0;
+  .sidebar-header,
+  .sidebar-chat,
+  .sidebar-role,
+  .sidebar-mall {
+    position: relative;
+    margin: 30px auto 0;
 
-  svg{
-    height: 100%;
-    width: 100%;
+    svg {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .sidebar-header {
+    width: 60px;
+    height: 40px;
+    margin-top: 20px; // 覆盖默认的 margin-top
+  }
+
+  .sidebar-chat,
+  .sidebar-role,
+  .sidebar-mall {
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  .sidebar-chat,
+  .sidebar-role {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sidebar-mall {
+    width: 35px;
+    height: 35px;
   }
 }
-
-.sidebar-chat {
-  width: 30px;
-  height: 30px;
-  position: relative;
-  margin: 30px auto 0;
-
-  svg{
-    height: 100%;
-    width: 100%;
-  }
-}
-
-.sidebar-role {
-  width: 30px;
-  height: 30px;
-  position: relative;
-  margin: 30px auto 0;
-
-  svg{
-    height: 100%;
-    width: 100%;
-  }
-}
-
-.sidebar-mall {
-  width: 35px;
-  height: 35px;
-  position: relative;
-  margin: 30px auto 0;
-
-  svg{
-    height: 100%;
-    width: 100%;
-  }
-}
-
 
 .action-button {
   display: inline-flex;
   margin-top: 3px;
   margin-left: 5px;
-}
 
-.action-button svg {
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
+  svg {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
 
-.action-button:hover svg {
-  opacity: 1;
+  &:hover svg {
+    opacity: 1;
+  }
 }

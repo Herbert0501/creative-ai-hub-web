@@ -14,7 +14,7 @@ export function DialogResizeableSidebar(props: PropsWithChildren<Props>) {
                 height: "100%",
             }}
             style={{
-                border: '1px solid #f5f5f5'
+                border: '1px solid #f5f5f5',
             }}
         >
             {children}
