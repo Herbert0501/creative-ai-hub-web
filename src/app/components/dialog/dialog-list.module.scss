@@ -1,5 +1,20 @@
-.dialog-list {
-  height: 100%; /* 设置一个固定高度 */
-  overflow: scroll; /* 添加滚动条 */
+.dialog-list-container {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* 确保内容溢出被隐藏 */
+  transition: transform 0.3s ease-in-out; /* 添加过渡效果 */
+  z-index: 20;
+
+  &.sidebar-open {
+    transform: translateX(0); /* 定义侧边栏展开时的位置 */
+  }
+
+  &.sidebar-closed {
+    transform: translateX(-100%); /* 定义侧边栏关闭时的位置 */
+  }
 }
 
+.dialog-list {
+  height: 100%;
+  overflow-y: auto; /* 使用 auto 可以仅在有必要时显示滚动条 */
+}

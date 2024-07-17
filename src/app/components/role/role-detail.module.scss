@@ -21,11 +21,22 @@
   flex-direction: column;
   align-items: center;
 }
-.desc {
-  padding: 24px 0;
-  font-size: 12px;
+
+.tag{
+  margin-top: 24px;
 }
+
+.desc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+  padding: 10px 0;
+  font-size: 14px;
+}
+
 .btn {
   background-color: var(--primary);
   margin-top: 24px;
 }
+

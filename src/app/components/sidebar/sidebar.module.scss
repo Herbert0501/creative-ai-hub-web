@@ -4,6 +4,8 @@
   height: var(--full-height);
   position: relative;
   background-color: #fff;
+  flex: 1;
+  z-index: 80;
 
   .sidebar-header,
   .sidebar-chat,
@@ -35,7 +37,8 @@
   }
 
   .sidebar-chat,
-  .sidebar-role {
+  .sidebar-role,
+  .sidebar-footer {
     width: 30px;
     height: 30px;
   }
@@ -43,6 +46,29 @@
   .sidebar-mall {
     width: 35px;
     height: 35px;
+  }
+
+  .sidebar-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    padding: 0.4rem;
+    bottom: 1rem;
+    left: 0.9rem;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      border-radius: 0.725rem;;
+      background-color: #cacaca;
+    }
+
+    svg {
+      height: 100%;
+      width: 100%;
+    }
   }
 }
 

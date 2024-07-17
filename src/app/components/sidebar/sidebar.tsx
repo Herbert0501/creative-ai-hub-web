@@ -7,15 +7,18 @@ import MaxIcon from "@/app/static/icons/maximize.svg";
 import MinIcon from "@/app/static/icons/minimize.svg";
 import ExitIcon from "@/app/static/icons/exit.svg";
 import ShopIcon from "@/app/static/icons/shop.svg";
+import SidebarIcon from "@/app/static/icons/sidebar.svg";
 
 import { useNavigate } from "react-router-dom";
 import { Path } from "@/app/constants";
 import { IconButton } from "@/app/components/button/button";
 import { useAppConfig } from "@/app/store/config";
+import { useDialog } from "@/context/DialogContext";
 
 export function Sidebar() {
   const navigate = useNavigate();
   const config = useAppConfig();
+  const { toggleDialog } = useDialog(); // 使用 useDialog
 
   return (
     <div className={styles.sidebar}>
@@ -72,6 +75,14 @@ export function Sidebar() {
         }}
       >
         <ShopIcon />
+      </div>
+
+      <div
+        title="点击展开侧边栏"
+        className={styles["sidebar-footer"]}
+        onClick={toggleDialog}
+      >
+        <SidebarIcon />
       </div>
     </div>
   );

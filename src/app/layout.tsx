@@ -1,4 +1,5 @@
 import "./styles/globals.scss";
+import { DialogProvider } from "@/context/DialogContext";
 
 export const metadata = {
   title: "ChatGPT - 赫伯特",
@@ -12,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body>{children}</body>
+      <body>
+        <DialogProvider>{children}</DialogProvider>
+      </body>
     </html>
   );
 }

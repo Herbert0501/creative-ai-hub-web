@@ -48,12 +48,10 @@ export function RoleDetail() {
       <div className={styles.header}>{role?.role_name}</div>
       <div className={styles.scroll}>
         <Avatar shape="square" size={64} src={role?.avatar} />
-        <p className={styles.desc}>
-          <Tag bordered={false} color="processing">
-            角色介绍
-          </Tag>
-          {role?.description}
-        </p>
+        <Tag bordered={false} color="processing" className={styles.tag}>
+          角色介绍
+        </Tag>
+        <p className={styles.desc}>{role?.description}</p>
         <Button
           type="primary"
           className={styles["btn"]}
