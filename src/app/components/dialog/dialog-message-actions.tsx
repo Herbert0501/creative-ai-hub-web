@@ -94,19 +94,21 @@ export default function DialogMessagesActions(props: {
           });
         }}
       />
-      <ChatAction
-        text="清除聊天"
-        icon={<ClearOutlined />}
-        onClick={() => {
-          chatStore.updateCurrentSession((session) => {
-            if (session.clearContextIndex === session.messages.length) {
-              session.clearContextIndex = undefined;
-            } else {
-              session.clearContextIndex = session.messages.length;
-            }
-          });
-        }}
-      />
+      <div className={styles["clear-outlined-button"]}>
+        <ChatAction
+          text="清除聊天"
+          icon={<ClearOutlined />}
+          onClick={() => {
+            chatStore.updateCurrentSession((session) => {
+              if (session.clearContextIndex === session.messages.length) {
+                session.clearContextIndex = undefined;
+              } else {
+                session.clearContextIndex = session.messages.length;
+              }
+            });
+          }}
+        />
+      </div>
     </div>
   );
 }
