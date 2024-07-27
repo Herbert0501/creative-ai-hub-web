@@ -19,7 +19,7 @@ export function DialogMessageItem(props: Props) {
   const chatStore = userChatStore();
   const isUser = message.role === MessageRole.user;
   const date = message?.time
-    ? dayjs(message.time).format("YYYY/MM/DD HH:mm:ss")
+    ? dayjs(message.time).format("MM/DD HH:mm:ss")
     : "";
   const [copied, setCopied] = useState(false); // 添加状态变量 copied
   const [retry, setretry] = useState(false);
@@ -68,29 +68,30 @@ export function DialogMessageItem(props: Props) {
             loading={message.content.length === 0 && !isUser}
           />
         </div>
-        <div className={styles["chat-message-header"]}>
-          <div className={styles["chat-message-edit"]}>
-            <Space>
-              <ChatAction
-                icon={<SyncOutlined />}
-                text="重试"
-                onClick={retryHandle}
-              />
-              <ChatAction
-                icon={<CopyOutlined />}
-                text="复制"
-                onClick={copyHandle}
-              />
-              <ChatAction
-                icon={<DeleteOutlined />}
-                text="删除"
-                onClick={deleteHandle}
-              />
-            </Space>
+        {!isUser && (
+          <div className={styles["chat-message-header"]}>
+            <div className={styles["chat-message-edit"]}>
+              <Space>
+                <ChatAction
+                  icon={<SyncOutlined />}
+                  text="重试"
+                  onClick={retryHandle}
+                />
+                <ChatAction
+                  icon={<CopyOutlined />}
+                  text="复制"
+                  onClick={copyHandle}
+                />
+                <ChatAction
+                  icon={<DeleteOutlined />}
+                  text="删除"
+                  onClick={deleteHandle}
+                />
+              </Space>
+            </div>
           </div>
-        </div>
+        )}
       </div>
-      {/* 添加浮动提示 */}
       {copied && <div className={styles["copied-animation"]}>Copied</div>}
       {retry && <div className={styles["copied-animation"]}>暂未实现</div>}
     </div>

@@ -50,7 +50,7 @@ function Screen() {
               <Route path={Path.Role} element={<Role />}>
                 <Route path=":id" element={<RoleDetail />} />
               </Route>
-              <Route path={Path.Sale} element={<Sale/>}/>
+              <Route path={Path.Sale} element={<Sale />} />
             </Routes>
           </div>
         </>

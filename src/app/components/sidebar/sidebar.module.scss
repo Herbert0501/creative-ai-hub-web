@@ -1,6 +1,4 @@
 .sidebar {
-  top: 0;
-  width: var(--sidebar-width);
   height: var(--full-height);
   position: relative;
   background-color: #fff;
@@ -23,7 +21,7 @@
   .sidebar-header {
     width: 60px;
     height: 40px;
-    margin-top: 20px; // 覆盖默认的 margin-top
+    margin-top: 24px; // 覆盖默认的 margin-top
   }
 
   .sidebar-chat,
@@ -74,8 +72,15 @@
 
 .action-button {
   display: inline-flex;
-  margin-top: 3px;
-  margin-left: 5px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  margin-left: 9px;
+
+  button {
+    width: 1rem;
+    height: auto;
+  }
 
   svg {
     opacity: 0;

@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  width: 100%;
   flex: 1;
   transition: all 0.3s ease-in-out;
 }
@@ -17,7 +16,7 @@
 
 @media (max-width: 540px) {
   .wrapper{
-    width: 82vw;
+    width: 83vw;
   }
   .header{
     margin: 0 auto;
@@ -27,8 +26,9 @@
 .scroll {
   flex: 1;
   overflow: auto;
-  padding: 24px;
+  padding: 5px 10px;
 }
+
 .clear-context {
   margin: 20px 0 0 0;
   padding: 4px 0;
