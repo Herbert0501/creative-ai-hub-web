@@ -99,51 +99,19 @@ export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
       {mermaidCode.length > 0 && (
         <Mermaid code={mermaidCode} key={mermaidCode} />
       )}
-      <pre ref={ref} {...props}>
+      <div className="copy-head">
+        <div className="copy-flag">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        {/* 新的copy 按钮位置 */}
         <span className="copy-code-button" onClick={copyCodeToClipboard}></span>
+      </div>
+      <pre ref={ref} {...props}>
         {props.children}
       </pre>
       {copySuccess && <div className="copy-success">Copied!</div>}
-      <style jsx>{`
-        .copy-code-button {
-          cursor: pointer;
-          padding: 5px;
-          background: #007bff;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          position: absolute;
-          top: 5px;
-          right: 10px;
-        }
-        .copy-code-button::after {
-          content: "Copy";
-        }
-        .copy-success {
-          position: absolute;
-          top: 0;
-          right: 0;
-          background-color: #04c204;
-          color: white;
-          padding: 5px 10px;
-          border-radius: 5px;
-          animation: floatUp 2s forwards;
-        }
-        @keyframes floatUp {
-          0% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 0.8;
-            transform: translateY(-40px);
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-80px);
-          }
-        }
-      `}</style>
     </div>
   );
 }

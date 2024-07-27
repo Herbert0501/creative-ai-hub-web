@@ -57,6 +57,7 @@ export function DialogMessageItem(props: Props) {
           <div className={styles["chat-message-username"]}>
             {isUser ? "User" : "ChatAI"}
           </div>
+          <div className={styles["date"]}>{date}</div>
         </div>
         <div className={styles["chat-message-item"]}>
           <Markdown
@@ -67,7 +68,6 @@ export function DialogMessageItem(props: Props) {
             loading={message.content.length === 0 && !isUser}
           />
         </div>
-        <div className={styles["date"]}>{date}</div>
         <div className={styles["chat-message-header"]}>
           <div className={styles["chat-message-edit"]}>
             <Space>
