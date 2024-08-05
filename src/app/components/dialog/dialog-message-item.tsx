@@ -12,11 +12,13 @@ import { copyToClipboard } from "@/utils";
 interface Props {
   message: Message;
   parentRef?: RefObject<HTMLDivElement>;
+  isLastMessage: boolean; // 新增属性，用于判断是否是最后一条消息
 }
 
 export function DialogMessageItem(props: Props) {
-  const { message, parentRef } = props;
+  const { message, parentRef, isLastMessage } = props;
   const chatStore = userChatStore();
+  const messageConpleted = chatStore.messageCompleted;
   const isUser = message.role === MessageRole.user;
   const date = message?.time
     ? dayjs(message.time).format("MM/DD HH:mm:ss")
@@ -24,7 +26,7 @@ export function DialogMessageItem(props: Props) {
   const [copied, setCopied] = useState(false); // 添加状态变量 copied
   const [retry, setretry] = useState(false);
   const retryHandle = () => {
-    // chatStore.onRetry();
+    chatStore.onRetry();
     setretry(true);
     setTimeout(() => {
       setretry(false);
@@ -68,32 +70,32 @@ export function DialogMessageItem(props: Props) {
             loading={message.content.length === 0 && !isUser}
           />
         </div>
-        {!isUser && (
-          <div className={styles["chat-message-header"]}>
-            <div className={styles["chat-message-edit"]}>
-              <Space>
+        <div className={styles["chat-message-header"]}>
+          <div className={styles["chat-message-edit"]}>
+            <Space>
+              {!isUser && isLastMessage && messageConpleted && (
                 <ChatAction
                   icon={<SyncOutlined />}
                   text="重试"
                   onClick={retryHandle}
                 />
-                <ChatAction
-                  icon={<CopyOutlined />}
-                  text="复制"
-                  onClick={copyHandle}
-                />
-                <ChatAction
-                  icon={<DeleteOutlined />}
-                  text="删除"
-                  onClick={deleteHandle}
-                />
-              </Space>
-            </div>
+              )}
+              <ChatAction
+                icon={<CopyOutlined />}
+                text="复制"
+                onClick={copyHandle}
+              />
+              <ChatAction
+                icon={<DeleteOutlined />}
+                text="删除"
+                onClick={deleteHandle}
+              />
+            </Space>
           </div>
-        )}
+        </div>
       </div>
       {copied && <div className={styles["copied-animation"]}>Copied</div>}
-      {retry && <div className={styles["copied-animation"]}>暂未实现</div>}
+      {retry && <div className={styles["copied-animation"]}>开始重试</div>}
     </div>
   );
 }

@@ -144,3 +144,10 @@
 .QRCode {
     transform: scale(6); /* 放大QRCode的尺寸 */
 }
+
+
+.footer{
+    display: flex;
+    position: fixed;
+    bottom: 0.5rem;
+}

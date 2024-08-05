@@ -103,6 +103,11 @@ export function Sale() {
               </span>
             </div>
           </div>
+          <footer className={styles["footer"]}>
+            <div>
+              温馨提示：一般实时到账。最多5分钟内到账！如果迟迟不到账，请在公众号联系管理员，管理员会在24小时内处理完成。感谢您的支持！
+            </div>
+          </footer>
         </div>
       )}
     </div>

@@ -39,6 +39,7 @@ export function DialogMessage() {
       <div className={styles.header}>{title}</div>
       <div className={styles.scroll} ref={scrollRef}>
         {currentSession.messages?.map((message, index) => {
+          const isLastMessage = index === currentSession.messages.length - 1;
           const shouldShowClearContextDivider = index === clearContextIndex - 1;
           return (
             <>
@@ -46,6 +47,7 @@ export function DialogMessage() {
                 message={message}
                 key={index}
                 parentRef={scrollRef}
+                isLastMessage={isLastMessage} // 传递 isLastMessage 属性
               />
               {shouldShowClearContextDivider && <ClearContextDivider />}
             </>

@@ -10,6 +10,10 @@ export function Auth() {
   const navigate = useNavigate();
   const access = useAccessStore();
 
+  const handleRedirect = () => {
+    window.open('https://blog.kangyaocoding.top', '_blank');
+  };
+
   return (
     <div className={styles["auth-page"]}>
       <div className={styles["auth-container"]}>
@@ -44,7 +48,7 @@ export function Auth() {
           <Button type="primary" onClick={() => access.login()}>
             确认登录 ✅
           </Button>
-          <Button type="text" onClick={() => navigate("/home")}>稍后再说 ⏰</Button>
+          <Button type="text" onClick={handleRedirect}>返回主页 ⏰</Button>
         </div>
         <div className={styles["auth-footer"]}>
           <span>

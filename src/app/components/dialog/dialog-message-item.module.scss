@@ -35,24 +35,28 @@
         min-width: 0;
       }
     }
-
-    .chat-message-edit {
-      display: none;
-    }
   }
 }
 
 .chat-message-container {
   display: flex;
   flex-direction: column;
-  max-width: 100%;
+  max-width: 92%;
+  margin-top: 0.3rem;
+  margin-left: 0.3rem;
 
   &:hover {
     .chat-message-edit {
       opacity: 0.9;
     }
   }
+
+  @media (max-width: 530px) {
+    max-width: 100%;
+    margin-left: 0;
+  }
 }
+
 
 .chat-message-avatar-ai,
 .chat-message-avatar-user {

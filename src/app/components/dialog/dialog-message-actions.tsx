@@ -77,13 +77,19 @@ export default function DialogMessagesActions(props: {
         value={config?.aiVersion ?? AIVersion.GPT_3_5_TURBO}
         style={{ width: 160 }}
         options={[
-          { value: AIVersion.GPT_3_5_TURBO, label: "gpt-3.5-turbo" },
-          { value: AIVersion.GPT_3_5_TURBO_16K, label: "gpt-3.5-turbo-16k" },
-          { value: AIVersion.GPT_4, label: "gpt-4" },
-          { value: AIVersion.GPT_4_32K, label: "gpt-4-32k" },
-          { value: AIVersion.GLM_3_5_TURBO, label: "glm-3-turbo" },
-          { value: AIVersion.GLM_4, label: "glm-4" },
-          { value: AIVersion.GLM_4V, label: "glm-4v" },
+          { value: AIVersion.GPT_3_5_TURBO, label: AIVersion.GPT_3_5_TURBO },
+          { value: AIVersion.GPT_3_5_TURBO_16K, label: AIVersion.GPT_3_5_TURBO_16K },
+          { value: AIVersion.GPT_4O_MINI, label: AIVersion.GPT_4O_MINI + "(推荐)" },
+          { value: AIVersion.GPT_4O, label: AIVersion.GPT_4O },
+          { value: AIVersion.GPT_4, label: AIVersion.GPT_4 },
+          // { value: AIVersion.GPT_4_32K, label: AIVersion.GPT_4_32K },
+          { value: AIVersion.GLM_3_5_TURBO, label: AIVersion.GLM_3_5_TURBO },
+          { value: AIVersion.GLM_4, label: AIVersion.GLM_4 },
+          { value: AIVersion.GLM_4_AIR, label: AIVersion.GLM_4_AIR + "(推荐)" },
+          // { value: AIVersion.GLM_4V, label: AIVersion.GLM_4V },
+          // { value: AIVersion.COGVIEW_3, label: AIVersion.COGVIEW_3 },
+          // { value: AIVersion.DALL_E_3, label: AIVersion.DALL_E_3 },
+          // { value: AIVersion.WHISPER_1, label: AIVersion.WHISPER_1 },
         ]}
         onChange={(value) => {
           chatStore.updateCurrentSession((session) => {

@@ -1,5 +1,4 @@
 import ReactMarkdown from "react-markdown";
-import "katex/dist/katex.min.css";
 import RemarkMath from "remark-math";
 import RemarkBreaks from "remark-breaks";
 import RehypeKatex from "rehype-katex";

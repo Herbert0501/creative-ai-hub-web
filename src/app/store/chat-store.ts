@@ -27,6 +27,7 @@ interface ChatStore {
   onRetry: () => void;
   deleteMessage: (message: Message) => void;
   createNewMessage: (value: string) => Message;
+  messageCompleted: boolean;
 }
 
 export interface ChatSession {
@@ -84,8 +85,7 @@ function formatMessages(messages: Message[]) {
 
 export function createNewMessage(value: string, role?: MessageRole) {
   return {
-    avatar:
-      role !== MessageRole.user ? "/role/chatgpt.png" : "/role/user.png",
+    avatar: role !== MessageRole.user ? "/role/chatgpt.png" : "/role/user.png",
     content: value,
     time: Date.now(),
     role: role || MessageRole.user,
@@ -101,6 +101,7 @@ export const userChatStore = create<ChatStore>()(
       id: 0,
       sessions: [createChatSession()],
       currentSessionIndex: 0,
+      messageCompleted: false, // 初始化状态
 
       // 开启会话
       openSession(dialog?: { avatar?: string; title?: string }) {
@@ -108,6 +109,7 @@ export const userChatStore = create<ChatStore>()(
         // 每开启一个会话，就对应设置一个对话ID
         set(() => ({ id: get().id + 1 }));
         session.id = get().id;
+        session.dialog.title = (dialog?.title || "新的对话") + `${session.id}`;
 
         // 保存创建的会话，到 sessions 数组中
         set((state) => ({
@@ -182,6 +184,9 @@ export const userChatStore = create<ChatStore>()(
           session.messages = session.messages.concat(botMessage);
         });
 
+        // 更新 messageCompletions 状态
+        set({ messageCompleted: false });
+
         // 调用接口
         const { body } = await completions({
           messages,
@@ -197,13 +202,15 @@ export const userChatStore = create<ChatStore>()(
               const { done, value } = await reader.read();
               if (done) {
                 controller.close();
+                // 更新 messageCompletions 状态
+                set({ messageCompleted: true });
                 return;
               }
 
               controller.enqueue(value);
               const text = decoder.decode(value);
 
-              if (text === "0003"){
+              if (text === "0003") {
                 controller.close();
                 useAccessStore.getState().goToLogin();
               }
@@ -228,13 +235,75 @@ export const userChatStore = create<ChatStore>()(
         set(() => ({ sessions }));
       },
 
-      onRetry() {
+      onRetry: async () => {
         const session = get().currentSession();
+        const lastMessageIndex = session.messages.length - 1;
+        const lastMessage = session.messages[lastMessageIndex];
+
+        // 获取所有消息，除了最后一条（当前消息）
         const activeMessages = session.messages?.slice(
-          session.clearContextIndex || 0
+          session.clearContextIndex || 0,
+          lastMessageIndex
         );
+
+        // 如果获取的消息为空，则不处理
+        if (activeMessages.length === 0) {
+          alert("消息为空不能重试！");
+          return;
+        }
+
         const messages = formatMessages(activeMessages);
-        completions({ messages, model: session.config.aiVersion });
+
+        // 调用 deleteMessage 删除最后一条消息
+        get().deleteMessage(lastMessage);
+
+        // 创建一个新的机器人消息
+        const botMessage: Message = createNewMessage("", MessageRole.system);
+        get().updateCurrentSession((session) => {
+          session.messages = session.messages.concat(botMessage);
+        });
+
+        // 更新 messageCompletions 状态
+        set({ messageCompleted: false });
+
+        // 调用接口
+        const { body } = await completions({
+          messages,
+          model: session.config.aiVersion,
+        });
+
+        // 读取并更新消息内容
+        const reader = body!.getReader();
+        const decoder = new TextDecoder();
+        new ReadableStream({
+          start(controller) {
+            async function push() {
+              const { done, value } = await reader.read();
+              if (done) {
+                controller.close();
+                // 更新 messageCompletions 状态
+                set({ messageCompleted: true });
+                return;
+              }
+
+              controller.enqueue(value);
+              const text = decoder.decode(value);
+
+              if (text === "0003") {
+                controller.close();
+                useAccessStore.getState().goToLogin();
+              }
+
+              botMessage.content += text;
+              get().updateCurrentSession((session) => {
+                session.messages = session.messages.concat();
+              });
+              push();
+            }
+
+            push();
+          },
+        });
       },
 
       deleteMessage(message: Message) {
