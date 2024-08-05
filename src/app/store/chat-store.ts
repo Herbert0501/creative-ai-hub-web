@@ -101,7 +101,7 @@ export const userChatStore = create<ChatStore>()(
       id: 0,
       sessions: [createChatSession()],
       currentSessionIndex: 0,
-      messageCompleted: false, // 初始化状态
+      messageCompleted: true, // 初始化状态
 
       // 开启会话
       openSession(dialog?: { avatar?: string; title?: string }) {
