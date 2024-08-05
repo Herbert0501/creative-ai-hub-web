@@ -6,7 +6,7 @@ import { SaleProduct, SaleProductEnum } from "@/types/sale_product";
 import { useAccessStore } from "@/app/store/access";
 import { useNavigate } from "react-router-dom";
 import WeChatPay from "@/app/static/icons/微信支付.svg";
-import Image from "next/image";
+import MyQrCode from "@/app/static/image/qrcode.png";
 
 export function Sale() {
   const [products, setProducts] = useState<SaleProduct[]>([]);
@@ -105,7 +105,7 @@ export function Sale() {
           </div>
           <footer className={styles["footer"]}>
             <div>
-              温馨提示：一般实时到账。最多5分钟内到账！如果迟迟不到账，请在公众号联系管理员，管理员会在24小时内处理完成。感谢您的支持！
+              温馨提示：一般实时到账。最多5分钟内到账！如果迟迟不到账，请在<a href={MyQrCode.src} target="_blank" style={{ color: "#2A9C49" }}>公众号联系管理员</a>，管理员会在24小时内处理完成。感谢您的支持！
             </div>
           </footer>
         </div>
