@@ -1,0 +1,181 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  padding: 20px;
+  background-color: #fdfdfd;
+  position: relative;
+  overflow-y: scroll;
+  margin-top: 1.5rem;
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ddd;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  font-size: 2rem;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.2);
+}
+
+.cardTitle {
+  font-weight: bold;
+  color: #888;
+  margin: 10px 0 5px 0;
+}
+
+.cardValue {
+  font-size: 18px;
+  color: #333;
+}
+
+/* 新增UUID卡片的样式 */
+.uuidCard {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+}
+
+.uuidCard .uuidValue {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.uuidCard:hover .uuidValue {
+  display: block;
+}
+
+/* 新增复制成功提示的样式 */
+.copyMessage {
+  position: fixed;
+  top: 18%;
+  left: 50%;
+  background-color: #52c41a;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  transform: translateX(-50%);
+  animation: fadeOut 2s ease-out;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-40px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+}
+
+@media (max-width: 530px) {
+  .dashboard {
+    align-items: stretch;
+  }
+
+  .profileHeader {
+    margin-bottom: 10px;
+  }
+
+  .title {
+    margin-bottom: 10px;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .card {
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  .uuidCard {
+    position: static; /* 取消绝对定位 */
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  .uuidCard .uuidValue {
+    display: none;
+    position: relative; /* 调整为相对定位 */
+    top: auto; /* 重置 top 属性 */
+    right: auto; /* 重置 right 属性 */
+    background-color: transparent; /* 去掉背景颜色 */
+    border: none; /* 去掉边框 */
+    padding: 0; /* 去掉内边距 */
+    box-shadow: none; /* 去掉阴影 */
+    white-space: normal; /* 允许换行 */
+    color: #333; /* 设置文本颜色 */
+    font-size: 18px; /* 设置文本字体大小 */
+    text-align: center; /* 设置文本居中 */
+  }
+
+  .uuidCard:hover .uuidValue {
+    display: none;
+  }
+}

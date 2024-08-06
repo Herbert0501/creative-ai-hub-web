@@ -8,6 +8,9 @@ import MinIcon from "@/app/static/icons/minimize.svg";
 import ExitIcon from "@/app/static/icons/exit.svg";
 import ShopIcon from "@/app/static/icons/shop.svg";
 import SidebarIcon from "@/app/static/icons/sidebar.svg";
+import ProfileIcon from "@/app/static/icons/profile.svg";
+import PublicIcon from "@/app/static/icons/public.svg";
+import MyQrCode from "@/app/static/image/qrcode.png";
 
 import { useNavigate } from "react-router-dom";
 import { Path } from "@/app/constants";
@@ -75,6 +78,27 @@ export function Sidebar() {
         }}
       >
         <ShopIcon />
+      </div>
+
+      <div
+        className={styles["sidebar-profile"]}
+        onClick={() => {
+          navigate(Path.Profile);
+        }}
+      >
+        <ProfileIcon />
+      </div>
+
+      <div className={styles["sidebar-public"]}>
+        <a
+          title="联系管理员"
+          href={MyQrCode.src}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles["icon-link"]}
+        >
+          <PublicIcon />
+        </a>
       </div>
 
       <div

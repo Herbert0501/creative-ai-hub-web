@@ -7,11 +7,13 @@ import { useAccessStore } from "@/app/store/access";
 import { useNavigate } from "react-router-dom";
 import WeChatPay from "@/app/static/icons/微信支付.svg";
 import MyQrCode from "@/app/static/image/qrcode.png";
+import Loader from "@/app/components/loader/loader";
 
 export function Sale() {
   const [products, setProducts] = useState<SaleProduct[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [payUrl, setPayUrl] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // 编程式路由跳转
   const navigate = useNavigate();
@@ -25,33 +27,42 @@ export function Sale() {
   };
 
   const queryProductListHandle = async () => {
-    const res = await queryProductList();
-    const { data, code } = await res.json();
-    // 登录拦截
-    if (code === SaleProductEnum.NeedLogin) {
-      useAccessStore.getState().goToLogin();
+    try {
+      const res = await queryProductList();
+      const { data, code } = await res.json();
+      if (code === SaleProductEnum.NeedLogin) {
+        useAccessStore.getState().goToLogin();
+      }
+      setLoading(false);
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching product list:", error);
     }
-    // 设置结果
-    setProducts(data);
   };
 
   const payOrder = async (productId: number) => {
-    const res = await createPayOrder(productId);
-    const { data, code } = await res.json();
-    // 登录拦截
-    if (code === SaleProductEnum.NeedLogin) {
-      useAccessStore.getState().goToLogin();
-    }
-    // 支付唤起
-    if (code == SaleProductEnum.SUCCESS) {
-      setPayUrl(data);
-      handleButtonClick();
+    try {
+      const res = await createPayOrder(productId);
+      const { data, code } = await res.json();
+      if (code === SaleProductEnum.NeedLogin) {
+        useAccessStore.getState().goToLogin();
+      }
+      if (code === SaleProductEnum.SUCCESS) {
+        setPayUrl(data);
+        handleButtonClick();
+      }
+    } catch (error) {
+      console.error("Error creating pay order:", error);
     }
   };
 
   useEffect(() => {
     queryProductListHandle().then((r) => {});
   }, []);
+
+  if (loading) {
+    return <Loader />; // 使用 Loading 组件
+  }
 
   return (
     <div className={styles["sale"]}>
@@ -105,7 +116,15 @@ export function Sale() {
           </div>
           <footer className={styles["footer"]}>
             <div>
-              温馨提示：一般实时到账。最多5分钟内到账！如果迟迟不到账，请在<a href={MyQrCode.src} target="_blank" style={{ color: "#2A9C49" }}>公众号联系管理员</a>，管理员会在24小时内处理完成。感谢您的支持！
+              温馨提示：一般实时到账。最多5分钟内到账！如果迟迟不到账，请在
+              <a
+                href={MyQrCode.src}
+                target="_blank"
+                style={{ color: "#2A9C49" }}
+              >
+                公众号联系管理员
+              </a>
+              ，管理员会在24小时内处理完成。感谢您的支持！
             </div>
           </footer>
         </div>

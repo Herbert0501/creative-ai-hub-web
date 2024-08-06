@@ -20,6 +20,7 @@ const Chat = dynamic(async () => (await import("../chat/chat")).Chat);
 const Role = dynamic(async () => (await import("../role/role")).Role);
 const Auth = dynamic(async () => (await import("../auth/auth")).Auth);
 const Sale = dynamic(async () => (await import("../sale/sale")).Sale);
+const Profile = dynamic(async () => (await import("../profile/profile")).Profile);
 
 function Screen() {
   const config = useAppConfig();
@@ -51,6 +52,7 @@ function Screen() {
                 <Route path=":id" element={<RoleDetail />} />
               </Route>
               <Route path={Path.Sale} element={<Sale />} />
+              <Route path={Path.Profile} element={<Profile />} />
             </Routes>
           </div>
         </>

@@ -3,9 +3,9 @@ import { useAccessStore } from "@/app/store/access";
 import { MessageRole } from "@/types/chat";
 
 // 使用相对 URL
-const apiHostUrl = process.env.REACT_APP_API_HOST || "";
+// const apiHostUrl = process.env.REACT_APP_API_HOST || "";
 
-// const apiHostUrl = "http://localhost:8090";
+const apiHostUrl = "http://localhost:8090";
 
 export const getRoleList = () => {
   // 从本地 json 文件获取
@@ -77,5 +77,15 @@ export const createPayOrder = (productId: number) => {
       "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
     },
     body: `productId=${productId}`,
+  });
+};
+
+/**
+ * 用户信息查询
+ */
+export const queryProfile = () => {
+  return fetch(`${apiHostUrl}/api/v1/auth/uc/profile`, {
+    method: "get",
+    headers: getHeaders(),
   });
 };

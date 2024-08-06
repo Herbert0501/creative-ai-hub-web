@@ -8,7 +8,9 @@
   .sidebar-header,
   .sidebar-chat,
   .sidebar-role,
-  .sidebar-mall {
+  .sidebar-mall,
+  .sidebar-profile,
+  .sidebar-public {
     position: relative;
     margin: 30px auto 0;
 
@@ -26,7 +28,9 @@
 
   .sidebar-chat,
   .sidebar-role,
-  .sidebar-mall {
+  .sidebar-mall,
+  .sidebar-profile,
+  .sidebar-public {
     transition: all 0.2s ease-in-out;
     cursor: pointer;
     &:hover {
@@ -41,9 +45,15 @@
     height: 30px;
   }
 
-  .sidebar-mall {
+  .sidebar-mall,
+  .sidebar-public {
     width: 35px;
     height: 35px;
+  }
+
+  .sidebar-profile {
+    width: 40px;
+    height: 40px;
   }
 
   .sidebar-footer {
@@ -59,7 +69,7 @@
     cursor: pointer;
 
     &:hover {
-      border-radius: 0.725rem;;
+      border-radius: 0.725rem;
       background-color: #cacaca;
     }
 
