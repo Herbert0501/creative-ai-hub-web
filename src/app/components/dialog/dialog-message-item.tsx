@@ -1,5 +1,3 @@
-import "../markdown/markdown.scss";
-import "katex/dist/katex.min.css";
 import styles from "./dialog-message-item.module.scss";
 import { Avatar, Space } from "antd";
 import { Message, MessageRole } from "@/types/chat";
