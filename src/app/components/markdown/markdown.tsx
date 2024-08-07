@@ -59,7 +59,7 @@ export function Mermaid(props: { code: string }) {
   );
 }
 
-export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
+export function PreCode(props: { isUser: boolean } & React.HTMLAttributes<HTMLPreElement>) {
   const ref = useRef<HTMLPreElement>(null);
   const refText = ref.current?.innerText;
   const [mermaidCode, setMermaidCode] = useState("");
@@ -98,15 +98,17 @@ export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
       {mermaidCode.length > 0 && (
         <Mermaid code={mermaidCode} key={mermaidCode} />
       )}
-      <div className="copy-head">
-        <div className="copy-flag">
-          <span></span>
-          <span></span>
-          <span></span>
+      {!props.isUser && (
+        <div className="copy-head">
+          <div className="copy-flag">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          {/* 显示复制按钮 */}
+          <span className="copy-code-button" onClick={copyCodeToClipboard}></span>
         </div>
-        {/* 新的copy 按钮位置 */}
-        <span className="copy-code-button" onClick={copyCodeToClipboard}></span>
-      </div>
+      )}
       <pre ref={ref} {...props}>
         {props.children}
       </pre>
@@ -115,7 +117,7 @@ export function PreCode(props: React.HTMLAttributes<HTMLPreElement>) {
   );
 }
 
-function _MarkDownContent(props: { content: string }) {
+function _MarkDownContent(props: { content: string; isUser: boolean }) {
   return (
     <ReactMarkdown
       remarkPlugins={[RemarkMath, RemarkGfm, RemarkBreaks]}
@@ -130,7 +132,7 @@ function _MarkDownContent(props: { content: string }) {
         ],
       ]}
       components={{
-        pre: PreCode,
+        pre: (preProps) => <PreCode {...preProps} isUser={props.isUser} />,
         a: (aProps) => {
           const href = aProps.href || "";
           const isInternal = /^\/#/i.test(href);
@@ -144,7 +146,7 @@ function _MarkDownContent(props: { content: string }) {
   );
 }
 
-export const MarkdownContent = React.memo(_MarkDownContent);
+export const MarkDownContent = React.memo(_MarkDownContent);
 
 export function Markdown(
   props: {
@@ -153,6 +155,7 @@ export function Markdown(
     fontSize?: number;
     parentRef?: RefObject<HTMLDivElement>;
     defaultShow?: boolean;
+    isUser: boolean; // 新增 isUser 属性
   } & React.DOMAttributes<HTMLDivElement>
 ) {
   return (
@@ -166,7 +169,7 @@ export function Markdown(
       {props.loading ? (
         <LoadingIcon />
       ) : (
-        <MarkdownContent content={props.content} />
+        <MarkDownContent content={props.content} isUser={props.isUser} />
       )}
     </div>
   );

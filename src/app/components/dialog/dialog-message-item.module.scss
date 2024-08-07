@@ -21,23 +21,6 @@
   }
 }
 
-.chat-message-user {
-  display: flex;
-
-  .chat-message-container {
-    .chat-message-item {
-      color: #fff;
-      background: #ebebeb;
-      border: 0;
-      box-shadow: none;
-
-      &:hover {
-        min-width: 0;
-      }
-    }
-  }
-}
-
 .chat-message-container {
   display: flex;
   flex-direction: column;
@@ -57,6 +40,26 @@
   }
 }
 
+.chat-message-user {
+  display: flex;
+
+  .chat-message-container {
+    .chat-message-item {
+      color: #fff;
+      background: #ebebeb;
+      border: 0;
+      box-shadow: none;
+
+      code {
+        background: transparent;
+      }
+
+      &:hover {
+        min-width: 0;
+      }
+    }
+  }
+}
 
 .chat-message-avatar-ai,
 .chat-message-avatar-user {
