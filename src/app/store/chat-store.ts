@@ -184,47 +184,50 @@ export const userChatStore = create<ChatStore>()(
           session.messages = session.messages.concat(botMessage);
         });
 
-        // 更新 messageCompletions 状态
         set({ messageCompleted: false });
 
-        // 调用接口
-        const { body } = await completions({
-          messages,
-          model: session.config.aiVersion,
-        });
+        try {
+          const { body } = await completions({
+            messages,
+            model: session.config.aiVersion,
+          });
 
-        // 填充消息
-        const reader = body!.getReader();
-        const decoder = new TextDecoder();
-        new ReadableStream({
-          start(controller) {
-            async function push() {
-              const { done, value } = await reader.read();
-              if (done) {
-                controller.close();
-                // 更新 messageCompletions 状态
-                set({ messageCompleted: true });
-                return;
+          const reader = body!.getReader();
+          const decoder = new TextDecoder();
+
+          await new ReadableStream({
+            async start(controller) {
+              async function push() {
+                const { done, value } = await reader.read();
+                if (done) {
+                  controller.close();
+                  return;
+                }
+
+                controller.enqueue(value);
+                const text = decoder.decode(value);
+
+                if (text === "0003") {
+                  controller.close();
+                  useAccessStore.getState().goToLogin();
+                }
+
+                botMessage.content += text;
+                get().updateCurrentSession((session) => {
+                  session.messages = session.messages.concat();
+                });
+
+                push();
               }
 
-              controller.enqueue(value);
-              const text = decoder.decode(value);
-
-              if (text === "0003") {
-                controller.close();
-                useAccessStore.getState().goToLogin();
-              }
-
-              botMessage.content += text;
-              get().updateCurrentSession((session) => {
-                session.messages = session.messages.concat();
-              });
-              push();
-            }
-
-            push();
-          },
-        });
+              await push();
+            },
+          });
+        } catch (error) {
+          console.error("Error sending message:", error);
+        } finally {
+          set({ messageCompleted: true });
+        }
       },
 
       // 更新当前会话
@@ -240,13 +243,11 @@ export const userChatStore = create<ChatStore>()(
         const lastMessageIndex = session.messages.length - 1;
         const lastMessage = session.messages[lastMessageIndex];
 
-        // 获取所有消息，除了最后一条（当前消息）
         const activeMessages = session.messages?.slice(
           session.clearContextIndex || 0,
           lastMessageIndex
         );
 
-        // 如果获取的消息为空，则不处理
         if (activeMessages.length === 0) {
           alert("消息为空不能重试！");
           return;
@@ -254,56 +255,57 @@ export const userChatStore = create<ChatStore>()(
 
         const messages = formatMessages(activeMessages);
 
-        // 调用 deleteMessage 删除最后一条消息
         get().deleteMessage(lastMessage);
 
-        // 创建一个新的机器人消息
         const botMessage: Message = createNewMessage("", MessageRole.system);
         get().updateCurrentSession((session) => {
           session.messages = session.messages.concat(botMessage);
         });
 
-        // 更新 messageCompletions 状态
         set({ messageCompleted: false });
 
-        // 调用接口
-        const { body } = await completions({
-          messages,
-          model: session.config.aiVersion,
-        });
+        try {
+          const { body } = await completions({
+            messages,
+            model: session.config.aiVersion,
+          });
 
-        // 读取并更新消息内容
-        const reader = body!.getReader();
-        const decoder = new TextDecoder();
-        new ReadableStream({
-          start(controller) {
-            async function push() {
-              const { done, value } = await reader.read();
-              if (done) {
-                controller.close();
-                // 更新 messageCompletions 状态
-                set({ messageCompleted: true });
-                return;
+          const reader = body!.getReader();
+          const decoder = new TextDecoder();
+
+          await new ReadableStream({
+            async start(controller) {
+              async function push() {
+                const { done, value } = await reader.read();
+                if (done) {
+                  controller.close();
+                  return;
+                }
+
+                controller.enqueue(value);
+                const text = decoder.decode(value);
+
+                if (text === "0003") {
+                  controller.close();
+                  useAccessStore.getState().goToLogin();
+                }
+
+                botMessage.content += text;
+                get().updateCurrentSession((session) => {
+                  session.messages = session.messages.concat();
+                });
+
+                push();
               }
 
-              controller.enqueue(value);
-              const text = decoder.decode(value);
-
-              if (text === "0003") {
-                controller.close();
-                useAccessStore.getState().goToLogin();
-              }
-
-              botMessage.content += text;
-              get().updateCurrentSession((session) => {
-                session.messages = session.messages.concat();
-              });
-              push();
-            }
-
-            push();
-          },
-        });
+              await push();
+            },
+          });
+        } catch (error) {
+          console.error("Error retrying message:", error);
+        } finally {
+          set({ messageCompleted: true });
+        }
       },
 
       deleteMessage(message: Message) {

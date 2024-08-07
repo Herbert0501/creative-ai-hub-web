@@ -29,7 +29,7 @@ export function DialogList() {
     }
 
     // 检查是否有默认选中的会话索引，并自动跳转
-    if (currentSessionIndex === 0) {
+    if (currentSessionIndex <= 0) {
       const session = sessions[currentSessionIndex];
       navigate(`/chat/${session.id}`, {
         state: { title: session.dialog.title },
