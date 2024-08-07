@@ -49,7 +49,22 @@
       background: #ebebeb;
       border: 0;
       box-shadow: none;
-
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        font-style: inherit;
+        color: inherit;
+        line-height: inherit;
+        text-align: inherit;
+        margin: 0;
+        padding: 0;
+      }
       code {
         background: transparent;
       }
