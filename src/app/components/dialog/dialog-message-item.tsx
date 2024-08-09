@@ -64,7 +64,7 @@ export function DialogMessageItem(props: Props) {
         <div className={styles["chat-message-item"]}>
           <Markdown
             content={message.content}
-            fontSize={13}
+            fontSize={14}
             parentRef={parentRef}
             defaultShow={false}
             loading={message.content.length === 0 && !isUser}
