@@ -105,7 +105,6 @@ export function PreCode(props: { isUser: boolean } & React.HTMLAttributes<HTMLPr
             <span></span>
             <span></span>
           </div>
-          {/* 显示复制按钮 */}
           <span className="copy-code-button" onClick={copyCodeToClipboard}></span>
         </div>
       )}
@@ -133,6 +132,14 @@ function _MarkDownContent(props: { content: string; isUser: boolean }) {
       ]}
       components={{
         pre: (preProps) => <PreCode {...preProps} isUser={props.isUser} />,
+        code: (codeProps) => {
+          const { className = "language-markdown", children } = codeProps;
+          return (
+            <code className={`hljs ${className}`}>
+              {children}
+            </code>
+          );
+        },
         a: (aProps) => {
           const href = aProps.href || "";
           const isInternal = /^\/#/i.test(href);
@@ -155,7 +162,7 @@ export function Markdown(
     fontSize?: number;
     parentRef?: RefObject<HTMLDivElement>;
     defaultShow?: boolean;
-    isUser: boolean; // 新增 isUser 属性
+    isUser: boolean;
   } & React.DOMAttributes<HTMLDivElement>
 ) {
   return (

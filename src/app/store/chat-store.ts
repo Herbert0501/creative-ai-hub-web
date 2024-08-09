@@ -28,6 +28,8 @@ interface ChatStore {
   deleteMessage: (message: Message) => void;
   createNewMessage: (value: string) => Message;
   messageCompleted: boolean;
+  interrupt: boolean;
+  interruptOutput: () => void;
 }
 
 export interface ChatSession {
@@ -69,7 +71,7 @@ function createChatSession(dialog?: {
     ],
     clearContextIndex: undefined,
     config: {
-      aiVersion: AIVersion.GPT_3_5_TURBO,
+      aiVersion: AIVersion.GLM_3_5_TURBO,
     },
   };
 }
@@ -101,8 +103,13 @@ export const userChatStore = create<ChatStore>()(
       id: 0,
       sessions: [createChatSession()],
       currentSessionIndex: 0,
-      messageCompleted: true, // 初始化状态
+      messageCompleted: true,
+      interrupt: false,
 
+      // 显式中断方法的实现
+      interruptOutput() {
+        set({ interrupt: true });
+      },
       // 开启会话
       openSession(dialog?: { avatar?: string; title?: string }) {
         const session = createChatSession(dialog);
@@ -184,9 +191,9 @@ export const userChatStore = create<ChatStore>()(
           session.messages = session.messages.concat(botMessage);
         });
 
-        set({ messageCompleted: false });
-
         try {
+          set({ messageCompleted: false });
+
           const { body } = await completions({
             messages,
             model: session.config.aiVersion,
@@ -199,8 +206,9 @@ export const userChatStore = create<ChatStore>()(
             async start(controller) {
               async function push() {
                 const { done, value } = await reader.read();
-                if (done) {
+                if (done || get().interrupt) {
                   controller.close();
+                  set({ messageCompleted: true, interrupt: false });
                   return;
                 }
 
@@ -224,9 +232,8 @@ export const userChatStore = create<ChatStore>()(
             },
           });
         } catch (error) {
+          set({ messageCompleted: true, interrupt: false });
           console.error("Error sending message:", error);
-        } finally {
-          set({ messageCompleted: true });
         }
       },
 
@@ -262,9 +269,9 @@ export const userChatStore = create<ChatStore>()(
           session.messages = session.messages.concat(botMessage);
         });
 
-        set({ messageCompleted: false });
-
         try {
+          set({ messageCompleted: false });
+
           const { body } = await completions({
             messages,
             model: session.config.aiVersion,
@@ -277,8 +284,9 @@ export const userChatStore = create<ChatStore>()(
             async start(controller) {
               async function push() {
                 const { done, value } = await reader.read();
-                if (done) {
+                if (done || get().interrupt) {
                   controller.close();
+                  set({ messageCompleted: true, interrupt: false });
                   return;
                 }
 
@@ -302,9 +310,8 @@ export const userChatStore = create<ChatStore>()(
             },
           });
         } catch (error) {
+          set({ messageCompleted: true, interrupt: false });
           console.error("Error retrying message:", error);
-        } finally {
-          set({ messageCompleted: true });
         }
       },
 

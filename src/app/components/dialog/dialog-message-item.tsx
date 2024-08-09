@@ -95,7 +95,7 @@ export function DialogMessageItem(props: Props) {
           </div>
         </div>
       </div>
-      {copied && <div className={styles["copied-animation"]}>Copied</div>}
+      {copied && <div className={styles["copied-animation"]}>复制成功</div>}
       {retry && <div className={styles["copied-animation"]}>开始重试</div>}
     </div>
   );
