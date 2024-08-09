@@ -19,13 +19,9 @@ export function DialogList() {
   const { isDialogOpen } = useDialog();
 
   useEffect(() => {
-    // console.log("Sessions: ", sessions);
-    // console.log("Current Session Index: ", currentSessionIndex);
-
     if (sessions.length > 0) {
       if (currentSessionIndex < 0) {
-        // console.log("No valid current session index. Setting to 0.");
-        selectSession(0); // 设置第一个会话为默认选中
+        selectSession(0);
       } else {
         const session = sessions[currentSessionIndex];
         navigate(`/chat/${session.id}`, {
@@ -33,7 +29,7 @@ export function DialogList() {
         });
       }
     }
-  }, [sessions, currentSessionIndex, selectSession, navigate]);
+  }, [sessions, currentSessionIndex, selectSession, navigate, chatStore]);
 
   return (
     <div

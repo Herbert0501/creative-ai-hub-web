@@ -28,8 +28,10 @@ interface ChatStore {
   deleteMessage: (message: Message) => void;
   createNewMessage: (value: string) => Message;
   messageCompleted: boolean;
+  messageCompletedOutput: () => void;
   interrupt: boolean;
   interruptOutput: () => void;
+  resetState: () => void;
 }
 
 export interface ChatSession {
@@ -105,10 +107,19 @@ export const userChatStore = create<ChatStore>()(
       currentSessionIndex: 0,
       messageCompleted: true,
       interrupt: false,
-
+      // 显式中断方法的实现
+      messageCompletedOutput() {
+        set({ messageCompleted: true });
+      },
       // 显式中断方法的实现
       interruptOutput() {
         set({ interrupt: true });
+      },
+      resetState() {
+        set({
+          messageCompleted: true,
+          interrupt: false,
+        });
       },
       // 开启会话
       openSession(dialog?: { avatar?: string; title?: string }) {
@@ -159,6 +170,8 @@ export const userChatStore = create<ChatStore>()(
         set(() => ({
           currentSessionIndex: nextIndex,
           sessions,
+          messageCompleted: true,
+          interrupt: false,
         }));
       },
 
@@ -202,10 +215,11 @@ export const userChatStore = create<ChatStore>()(
           const reader = body!.getReader();
           const decoder = new TextDecoder();
 
-          await new ReadableStream({
+          new ReadableStream({
             async start(controller) {
               async function push() {
                 const { done, value } = await reader.read();
+                console.log("done: ", value);
                 if (done || get().interrupt) {
                   controller.close();
                   set({ messageCompleted: true, interrupt: false });
@@ -225,15 +239,15 @@ export const userChatStore = create<ChatStore>()(
                   session.messages = session.messages.concat();
                 });
 
-                push();
+                await push();
               }
 
               await push();
             },
           });
         } catch (error) {
-          set({ messageCompleted: true, interrupt: false });
           console.error("Error sending message:", error);
+          set({ messageCompleted: true, interrupt: false });
         }
       },
 
@@ -280,7 +294,7 @@ export const userChatStore = create<ChatStore>()(
           const reader = body!.getReader();
           const decoder = new TextDecoder();
 
-          await new ReadableStream({
+          new ReadableStream({
             async start(controller) {
               async function push() {
                 const { done, value } = await reader.read();

@@ -5,6 +5,7 @@ import { MessageRole } from "@/types/chat";
 import { DialogMessageInput } from "@/app/components/dialog/dialog-message-input";
 import { createNewMessage, userChatStore } from "@/app/store/chat-store";
 import userScrollToBottom from "@/app/hooks/useScrollToBottom";
+import { useEffect, useState } from "react";
 
 interface Props {
   id: string;
@@ -22,6 +23,18 @@ export function DialogMessage() {
   const location = useLocation();
   const { scrollRef, setAutoScroll, scrollToBottom } = userScrollToBottom();
   const title = location.state?.title || "新的对话";
+
+  const [prevPathname, setPrevPathname] = useState(location.pathname);
+  // 路径变化时重置store
+  useEffect(() => {
+    const currentPathname = location.pathname;
+
+    if (/chat/.test(currentPathname) && currentPathname !== prevPathname) {
+      console.info("chatStore.resetState");
+      chatStore.resetState();
+      setPrevPathname(currentPathname);
+    }
+  }, [location.pathname, chatStore, prevPathname]);
 
   // 输入事件
   const onEnter = async (value: string) => {

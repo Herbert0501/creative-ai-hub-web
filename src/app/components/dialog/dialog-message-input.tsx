@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./dialog-message-input.module.scss";
 import { Button, Input } from "antd";
-import { SendOutlined, CloseOutlined } from "@ant-design/icons"; // 导入发送和打叉图标
+import { SendOutlined, CloseOutlined } from "@ant-design/icons";
 import { userChatStore } from "@/app/store/chat-store";
 import DialogMessagesActions from "./dialog-message-actions";
+import { useLocation } from "react-router-dom";
 
 interface Props {
   onEnter: (value: any) => void;
@@ -51,7 +52,6 @@ export function DialogMessageInput(props: Props) {
             onKeyDown={handleKeyDown}
           />
           <Button
-            // disabled={!messageCompleted}
             type="primary"
             className={styles.btn}
             onClick={() => {
