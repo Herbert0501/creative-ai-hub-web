@@ -219,7 +219,6 @@ export const userChatStore = create<ChatStore>()(
             async start(controller) {
               async function push() {
                 const { done, value } = await reader.read();
-                console.log("done: ", value);
                 if (done || get().interrupt) {
                   controller.close();
                   set({ messageCompleted: true, interrupt: false });
