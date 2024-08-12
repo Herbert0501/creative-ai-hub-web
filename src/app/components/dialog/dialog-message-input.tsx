@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./dialog-message-input.module.scss";
 import { Button, Input } from "antd";
 import { SendOutlined, CloseOutlined } from "@ant-design/icons";
 import { userChatStore } from "@/app/store/chat-store";
 import DialogMessagesActions from "./dialog-message-actions";
-import { useLocation } from "react-router-dom";
 
 interface Props {
   onEnter: (value: any) => void;
@@ -21,6 +20,14 @@ export function DialogMessageInput(props: Props) {
   const [value, setValue] = useState<string>("");
   const currentSession = chatStore.currentSession();
 
+  // Use a ref to store the chatStore object to avoid circular dependencies
+  const chatStoreRef = useRef(chatStore);
+
+  // Assign the current chatStore to the ref
+  useEffect(() => {
+    chatStoreRef.current = chatStore;
+  }, [chatStore]);
+
   const onSend = (value: string) => {
     if (!value || value.trim().length === 0) {
       return;
@@ -29,8 +36,8 @@ export function DialogMessageInput(props: Props) {
     setValue("");
 
     setTimeout(() => {
-      chatStore.resetState();
-    }, 60000); // 60000毫秒即1分钟
+      chatStoreRef.current.resetState();
+    }, 60000);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -38,6 +45,14 @@ export function DialogMessageInput(props: Props) {
       onSend(value);
     }
   };
+
+  useEffect(() => {
+    // Clean-up function to be called on component unmount
+    return () => {
+      console.log("Component unmounted");
+      chatStoreRef.current.resetState();
+    };
+  }, []); // Empty dependency array to ensure this effect only runs on unmount
 
   return (
     <>

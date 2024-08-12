@@ -334,6 +334,7 @@ export const userChatStore = create<ChatStore>()(
           const index = session.messages.findIndex((m) => m.id === message.id);
           session.messages.splice(index, 1);
         });
+        set({ messageCompleted: true, interrupt: false });
       },
 
       createNewMessage(value: string, role?: MessageRole) {
