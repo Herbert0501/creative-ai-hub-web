@@ -3,9 +3,9 @@ import { useAccessStore } from "@/app/store/access";
 import { MessageRole } from "@/types/chat";
 
 // 使用相对 URL
-// const apiHostUrl = process.env.REACT_APP_API_HOST || "";
+const apiHostUrl = process.env.REACT_APP_API_HOST || "";
 
-const apiHostUrl = "http://localhost:8090";
+// const apiHostUrl = "http://localhost:8090";
 
 export const getRoleList = () => {
   // 从本地 json 文件获取
