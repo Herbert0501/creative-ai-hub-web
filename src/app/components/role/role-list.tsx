@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { DialogResizeableSidebar } from "@/app/components/dialog/dialog-resizable-sidebar";
 import { Avatar, Spin } from "antd";
 import { DialogHead } from "@/app/components/dialog/dialog-head";
-import { useDialog } from '@/context/DialogContext'; // 引入 useDialog
+import { useDialog } from '@/context/DialogContext';
 import { Role } from "@/types/role";
 
 export interface RoleContextType {
@@ -22,7 +22,7 @@ export const RoleContext = React.createContext<RoleContextType>({
 export function RoleList() {
   const navigate = useNavigate();
   const { roles, selected, setSelected } = useContext(RoleContext);
-  const { isDialogOpen } = useDialog(); // 使用 useDialog
+  const { isDialogOpen } = useDialog();
 
   useEffect(() => {
     // 默认选中第一个角色
@@ -38,14 +38,6 @@ export function RoleList() {
       setSelected(-1);
     }
   }, [isDialogOpen, setSelected]);
-
-  // if (!isDialogOpen) {
-  //   return (
-  //     <div style={{ display: "none", margin: 0, padding: 0 }}> {/* 设置 display: none */}
-  //       {/* 这里可以放置一些占位内容或者空元素 */}
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className={styles["role-list-container"]} style={{ display: isDialogOpen ? 'flex' : 'none' }}>

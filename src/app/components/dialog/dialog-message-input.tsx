@@ -27,6 +27,10 @@ export function DialogMessageInput(props: Props) {
     }
     onEnter(value);
     setValue("");
+
+    setTimeout(() => {
+      chatStore.resetState();
+    }, 60000); // 60000毫秒即1分钟
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

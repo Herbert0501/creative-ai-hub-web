@@ -71,3 +71,43 @@
   font-size: 12px;
   margin-top: 20px;
 }
+
+.custom-alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.alert-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+  width: 80%;
+}
+
+.alert-content h2 {
+  margin: 0;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.alert-content p {
+  margin: 0;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.alert-content button {
+  width: 100%;
+}
