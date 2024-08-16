@@ -1,1 +1,1 @@
-docker build -t kangyaocoding/creative-ai-hub-web:2.8.2 .
+docker build -t kangyaocoding/creative-ai-hub-web:2.8.3 .
