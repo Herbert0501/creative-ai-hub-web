@@ -14,6 +14,12 @@ import { AIVersion } from "@/app/constants";
 import { completions } from "@/apis";
 import { useAccessStore } from "./access";
 
+// 常量提取
+const DEFAULT_AVATAR = "/role/chatgpt.png";
+const DEFAULT_TITLE = "新的对话";
+const DEFAULT_SUBTITLE = "请问有什么需要帮助的吗？";
+
+// 类型定义
 interface ChatStore {
   id: number;
   sessions: ChatSession[];
@@ -35,18 +41,14 @@ interface ChatStore {
 }
 
 export interface ChatSession {
-  // 会话ID
   id: number;
-  // 对话框体
   dialog: Dialog;
-  // 对话消息
   messages: Message[];
-  // 会话配置
   config: SessionConfig;
-  // 清除会话的索引
   clearContextIndex?: number;
 }
 
+// 创建新的会话
 function createChatSession(dialog?: {
   avatar?: string;
   title?: string;
@@ -54,16 +56,16 @@ function createChatSession(dialog?: {
   return {
     id: 0,
     dialog: {
-      avatar: dialog?.avatar || "/role/chatgpt.png",
-      title: dialog?.title || "新的对话",
+      avatar: dialog?.avatar || DEFAULT_AVATAR,
+      title: dialog?.title || DEFAULT_TITLE,
       count: 0,
-      subTitle: "请问有什么需要帮助的吗？",
+      subTitle: DEFAULT_SUBTITLE,
       timestamp: new Date().getTime(),
     },
     messages: [
       {
-        avatar: dialog?.avatar || "/role/chatgpt.png",
-        content: "请问有什么需要帮助的吗？",
+        avatar: dialog?.avatar || DEFAULT_AVATAR,
+        content: DEFAULT_SUBTITLE,
         message_type: MessageType.Text,
         time: Date.now(),
         direction: MessageDirection.Receive,
@@ -78,18 +80,20 @@ function createChatSession(dialog?: {
   };
 }
 
-function formatMessages(messages: Message[]) {
-  // 如果历史消息超过5，只取最新的5个
+// 格式化消息
+function formatMessages(messages: Message[]): Message[] {
   const latestMessages = messages.length > 5 ? messages.slice(-5) : messages;
-  return latestMessages.map(({ content, role }) => ({
-    content,
-    role,
+  return latestMessages.map((message) => ({
+    ...message,
+    content: message.content,
+    role: message.role,
   }));
 }
 
+// 创建新消息
 export function createNewMessage(value: string, role?: MessageRole) {
   return {
-    avatar: role !== MessageRole.user ? "/role/chatgpt.png" : "/role/user.png",
+    avatar: role !== MessageRole.user ? DEFAULT_AVATAR : "/role/user.png",
     content: value,
     time: Date.now(),
     role: role || MessageRole.user,
@@ -98,55 +102,105 @@ export function createNewMessage(value: string, role?: MessageRole) {
   } as Message;
 }
 
+// 处理发送消息的通用函数
+async function handleSendMessage(
+  messages: Message[],
+  model: AIVersion,
+  botMessage: Message,
+  set: any,
+  get: any
+) {
+  try {
+    set({ messageCompleted: false });
+
+    const { body } = await completions({
+      messages,
+      model,
+    });
+
+    const reader = body!.getReader();
+    const decoder = new TextDecoder();
+
+    new ReadableStream({
+      async start(controller) {
+        async function push() {
+          const { done, value } = await reader.read();
+          if (done || get().interrupt) {
+            controller.close();
+            set({ messageCompleted: true, interrupt: false });
+            return;
+          }
+
+          controller.enqueue(value);
+          const text = decoder.decode(value);
+
+          if (text === "0003") {
+            controller.close();
+            useAccessStore.getState().goToLogin();
+          }
+
+          botMessage.content += text;
+          get().updateCurrentSession((session: ChatSession) => {
+            session.messages = session.messages.concat();
+          });
+
+          await push();
+        }
+
+        await push();
+      },
+    });
+  } catch (error) {
+    console.error("Error sending message:", error);
+    set({ messageCompleted: true, interrupt: false });
+  }
+}
+
 export const userChatStore = create<ChatStore>()(
   persist(
     (set, get) => ({
-      // 属性赋值
       id: 0,
       sessions: [createChatSession()],
       currentSessionIndex: 0,
       messageCompleted: true,
       interrupt: false,
-      // 显式中断方法的实现
+
       messageCompletedOutput() {
         set({ messageCompleted: true });
       },
-      // 显式中断方法的实现
+
       interruptOutput() {
         set({ interrupt: true });
       },
+
       resetState() {
         set({
           messageCompleted: true,
           interrupt: false,
         });
       },
-      // 开启会话
+
       openSession(dialog?: { avatar?: string; title?: string }) {
         const session = createChatSession(dialog);
-        // 每开启一个会话，就对应设置一个对话ID
         set(() => ({ id: get().id + 1 }));
         session.id = get().id;
-        session.dialog.title = (dialog?.title || "新的对话") + `${session.id}`;
+        session.dialog.title =
+          (dialog?.title || DEFAULT_TITLE) + `${session.id}`;
 
-        // 保存创建的会话，到 sessions 数组中
         set((state) => ({
           currentSessionIndex: 0,
-          // 在数组头部插入数据
           sessions: [session].concat(state.sessions),
         }));
 
         return session;
       },
 
-      // 选择会话
       selectSession(index: number) {
         set({
           currentSessionIndex: index,
         });
       },
 
-      // 删除会话
       deleteSession(index: number) {
         const count = get().sessions.length;
         const deleteSession = get().sessions.at(index);
@@ -175,7 +229,6 @@ export const userChatStore = create<ChatStore>()(
         }));
       },
 
-      // 当前会话
       currentSession() {
         let index = get().currentSessionIndex;
         const sessions = get().sessions;
@@ -186,11 +239,10 @@ export const userChatStore = create<ChatStore>()(
         return sessions[index];
       },
 
-      // 发送消息
       async onSendMessage(newMessage: Message) {
         const session = get().currentSession();
 
-        get().updateCurrentSession((session) => {
+        get().updateCurrentSession((session: ChatSession) => {
           session.messages = session.messages.concat(newMessage);
         });
 
@@ -200,58 +252,20 @@ export const userChatStore = create<ChatStore>()(
         const messages = formatMessages(activeMessages);
 
         const botMessage: Message = createNewMessage("", MessageRole.system);
-        get().updateCurrentSession((session) => {
+        get().updateCurrentSession((session: ChatSession) => {
           session.messages = session.messages.concat(botMessage);
         });
 
-        try {
-          set({ messageCompleted: false });
-
-          const { body } = await completions({
-            messages,
-            model: session.config.aiVersion,
-          });
-
-          const reader = body!.getReader();
-          const decoder = new TextDecoder();
-
-          new ReadableStream({
-            async start(controller) {
-              async function push() {
-                const { done, value } = await reader.read();
-                if (done || get().interrupt) {
-                  controller.close();
-                  set({ messageCompleted: true, interrupt: false });
-                  return;
-                }
-
-                controller.enqueue(value);
-                const text = decoder.decode(value);
-
-                if (text === "0003") {
-                  controller.close();
-                  useAccessStore.getState().goToLogin();
-                }
-
-                botMessage.content += text;
-                get().updateCurrentSession((session) => {
-                  session.messages = session.messages.concat();
-                });
-
-                await push();
-              }
-
-              await push();
-            },
-          });
-        } catch (error) {
-          console.error("Error sending message:", error);
-          set({ messageCompleted: true, interrupt: false });
-        }
+        await handleSendMessage(
+          messages,
+          session.config.aiVersion,
+          botMessage,
+          set,
+          get
+        );
       },
 
-      // 更新当前会话
-      updateCurrentSession(updater) {
+      updateCurrentSession(updater: (session: ChatSession) => void) {
         const sessions = get().sessions;
         const index = get().currentSessionIndex;
         updater(sessions[index]);
@@ -278,58 +292,21 @@ export const userChatStore = create<ChatStore>()(
         get().deleteMessage(lastMessage);
 
         const botMessage: Message = createNewMessage("", MessageRole.system);
-        get().updateCurrentSession((session) => {
+        get().updateCurrentSession((session: ChatSession) => {
           session.messages = session.messages.concat(botMessage);
         });
 
-        try {
-          set({ messageCompleted: false });
-
-          const { body } = await completions({
-            messages,
-            model: session.config.aiVersion,
-          });
-
-          const reader = body!.getReader();
-          const decoder = new TextDecoder();
-
-          new ReadableStream({
-            async start(controller) {
-              async function push() {
-                const { done, value } = await reader.read();
-                if (done || get().interrupt) {
-                  controller.close();
-                  set({ messageCompleted: true, interrupt: false });
-                  return;
-                }
-
-                controller.enqueue(value);
-                const text = decoder.decode(value);
-
-                if (text === "0003") {
-                  controller.close();
-                  useAccessStore.getState().goToLogin();
-                }
-
-                botMessage.content += text;
-                get().updateCurrentSession((session) => {
-                  session.messages = session.messages.concat();
-                });
-
-                push();
-              }
-
-              await push();
-            },
-          });
-        } catch (error) {
-          set({ messageCompleted: true, interrupt: false });
-          console.error("Error retrying message:", error);
-        }
+        await handleSendMessage(
+          messages,
+          session.config.aiVersion,
+          botMessage,
+          set,
+          get
+        );
       },
 
       deleteMessage(message: Message) {
-        get().updateCurrentSession((session) => {
+        get().updateCurrentSession((session: ChatSession) => {
           const index = session.messages.findIndex((m) => m.id === message.id);
           session.messages.splice(index, 1);
         });
