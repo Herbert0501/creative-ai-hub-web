@@ -27,33 +27,6 @@ export function Sidebar() {
 
   return (
     <div className={styles.sidebar}>
-      <div className={styles["action-button"]}>
-        <IconButton
-          icon={<ExitIcon />}
-          backgroundColor={"#ff4e4e"}
-          onClick={() => {
-            const confirmed = window.confirm("确定要退出吗？");
-            if (confirmed) {
-              access.goToLogin();
-            }
-          }}
-        />
-        <IconButton
-          icon={<MinIcon />}
-          backgroundColor={"#f3c910"}
-          onClick={() => {
-            config.update((config) => (config.tightBorder = false));
-          }}
-        />
-        <IconButton
-          icon={<MaxIcon />}
-          backgroundColor={"#04c204"}
-          onClick={() => {
-            config.update((config) => (config.tightBorder = true));
-          }}
-        />
-      </div>
-
       <div className={styles["sidebar-header"]}>
         <ChatGPTIcon />
       </div>
@@ -104,6 +77,18 @@ export function Sidebar() {
         >
           <PublicIcon />
         </a>
+      </div>
+
+      <div className={styles["action-button"]}>
+        <IconButton
+          icon={<ExitIcon />}
+          onClick={() => {
+            const confirmed = window.confirm("确定要退出登录吗？");
+            if (confirmed) {
+              access.goToLogin();
+            }
+          }}
+        />
       </div>
 
       <div

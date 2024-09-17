@@ -11,6 +11,8 @@ export function Auth() {
   const navigate = useNavigate();
   const access = useAccessStore();
   const [isWechatBrowser, setIsWechatBrowser] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // 按钮是否禁用
+  const buttonCooldown = 3000; // 冷却时间，单位为毫秒（例如3秒）
 
   useEffect(() => {
     if (isWechat()) {
@@ -30,6 +32,18 @@ export function Auth() {
       window.removeEventListener("keydown", handleEnterPress);
     };
   }, [access]);
+
+  const handleLogin = () => {
+    if (isButtonDisabled) return; // 如果按钮被禁用，不允许点击
+
+    access.login();
+    setIsButtonDisabled(true); // 点击后禁用按钮
+
+    // 启动一个定时器，在冷却时间后重新启用按钮
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, buttonCooldown);
+  };
 
   const isWechat = () => {
     return /MicroMessenger/i.test(window.navigator.userAgent);
@@ -94,8 +108,12 @@ export function Auth() {
           </span>
         ) : null}
         <div className={styles["auth-actions"]}>
-          <Button type="primary" onClick={() => access.login()}>
-            确认登录 ✅
+          <Button
+            type="primary"
+            onClick={handleLogin}
+            disabled={isButtonDisabled} // 控制按钮是否禁用
+          >
+            {isButtonDisabled ? "请稍候..." : "确认登录 ✅"}
           </Button>
           <Button type="text" onClick={handleRedirect}>
             返回主页 ⏰

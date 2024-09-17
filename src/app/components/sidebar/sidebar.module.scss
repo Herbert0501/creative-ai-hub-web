@@ -81,23 +81,24 @@
 }
 
 .action-button {
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 15px;
-  margin-left: 9px;
+  margin-top: 24px;
 
   button {
-    width: 1rem;
-    height: auto;
+    background-color: transparent;
   }
 
   svg {
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    width: 35px;
+    height: 35px;
+    fill: rgb(151, 151, 151);
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
   }
 
   &:hover svg {
-    opacity: 1;
+    fill: #ff5500;
   }
 }
