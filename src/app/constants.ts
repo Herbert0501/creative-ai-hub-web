@@ -19,5 +19,6 @@ export enum AIVersion {
   GLM_4V = "glm-4v",
   COGVIEW_3 = "cogview-3",
   DALL_E_3 = "dall-e-3",
+  DALL_E_2 = "dall-e-2",
   WHISPER_1 = "whisper-1",
 }

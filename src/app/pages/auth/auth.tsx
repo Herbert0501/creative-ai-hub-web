@@ -16,7 +16,20 @@ export function Auth() {
     if (isWechat()) {
       setIsWechatBrowser(true);
     }
-  }, []);
+    const handleEnterPress = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        access.login();
+      }
+    };
+
+    // 绑定按键事件
+    window.addEventListener("keydown", handleEnterPress);
+
+    // 清理函数，组件卸载时移除事件监听
+    return () => {
+      window.removeEventListener("keydown", handleEnterPress);
+    };
+  }, [access]);
 
   const isWechat = () => {
     return /MicroMessenger/i.test(window.navigator.userAgent);
@@ -24,12 +37,14 @@ export function Auth() {
 
   const openInBrowser = () => {
     const currentUrl = window.location.href;
-    alert(`请复制以下链接，并在浏览器中打开。\n链接： ${currentUrl}\n或点击右上角↗，选择在🌍浏览器打开`);
+    alert(
+      `请复制以下链接，并在浏览器中打开。\n链接： ${currentUrl}\n或点击右上角↗，选择在🌍浏览器打开`
+    );
     return;
   };
 
   const handleRedirect = () => {
-    window.open('https://blog.kangyaocoding.top', '_blank');
+    window.open("https://blog.kangyaocoding.top", "_blank");
   };
 
   return (
@@ -51,7 +66,12 @@ export function Auth() {
         <div className={styles["auth-sub-title"]}>
           学习AI开发、掌握AI部署、运用AI提效 💡
         </div>
-        <Image src={MyQrCode} width={250} alt="QR Code" className={styles["auth-qrcode"]} />
+        <Image
+          src={MyQrCode}
+          width={250}
+          alt="QR Code"
+          className={styles["auth-qrcode"]}
+        />
         <div className={styles["auth-tips"]}>
           扫码关注公众号【哈利Coding】📱，
           <a href={MyQrCode.src} target="_blank">
@@ -60,7 +80,7 @@ export function Auth() {
         </div>
         <Input
           className={styles["auth-input"]}
-          type="password"
+          type="text"
           placeholder="在此处填写验证码 🔑"
           value={access.accessCode}
           onChange={(e) => {
@@ -77,7 +97,9 @@ export function Auth() {
           <Button type="primary" onClick={() => access.login()}>
             确认登录 ✅
           </Button>
-          <Button type="text" onClick={handleRedirect}>返回主页 ⏰</Button>
+          <Button type="text" onClick={handleRedirect}>
+            返回主页 ⏰
+          </Button>
         </div>
         <div className={styles["auth-footer"]}>
           <span>

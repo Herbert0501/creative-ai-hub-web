@@ -116,7 +116,8 @@ export default function DialogMessagesActions(props: {
             { value: AIVersion.GPT_4, label: AIVersion.GPT_4 },
             // { value: AIVersion.GLM_4V, label: AIVersion.GLM_4V },
             // { value: AIVersion.COGVIEW_3, label: AIVersion.COGVIEW_3 + "(图片生成)"},
-            // { value: AIVersion.DALL_E_3, label: AIVersion.DALL_E_3 },
+            { value: AIVersion.DALL_E_2, label: AIVersion.DALL_E_2 },
+            { value: AIVersion.DALL_E_3, label: AIVersion.DALL_E_3 },
             // { value: AIVersion.WHISPER_1, label: AIVersion.WHISPER_1 },
           ]}
           onChange={(value) => {

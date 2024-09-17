@@ -17,11 +17,13 @@ import { Path } from "@/app/constants";
 import { IconButton } from "@/app/components/button/button";
 import { useAppConfig } from "@/app/store/config";
 import { useDialog } from "@/context/DialogContext";
+import { useAccessStore } from "@/app/store/access";
 
 export function Sidebar() {
   const navigate = useNavigate();
   const config = useAppConfig();
   const { toggleDialog } = useDialog(); // 使用 useDialog
+  const access = useAccessStore();
 
   return (
     <div className={styles.sidebar}>
@@ -30,7 +32,10 @@ export function Sidebar() {
           icon={<ExitIcon />}
           backgroundColor={"#ff4e4e"}
           onClick={() => {
-            alert("尚未实现");
+            const confirmed = window.confirm("确定要退出吗？");
+            if (confirmed) {
+              access.goToLogin();
+            }
           }}
         />
         <IconButton
