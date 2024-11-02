@@ -3,8 +3,6 @@ import styles from "./sidebar.module.scss";
 import ChatGPTIcon from "@/app/static/icons/chatgpt.svg";
 import ChatIcon from "@/app/static/icons/chat.svg";
 import RoleIcon from "@/app/static/icons/role.svg";
-import MaxIcon from "@/app/static/icons/maximize.svg";
-import MinIcon from "@/app/static/icons/minimize.svg";
 import ExitIcon from "@/app/static/icons/exit.svg";
 import ShopIcon from "@/app/static/icons/shop.svg";
 import SidebarIcon from "@/app/static/icons/sidebar.svg";
