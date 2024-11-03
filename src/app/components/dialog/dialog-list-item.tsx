@@ -1,5 +1,5 @@
 import styles from "./dialog-list-item.module.scss";
-import { Avatar, Badge, Button, Space } from "antd";
+import { Avatar, Badge, Space } from "antd";
 import { ChatSession } from "@/app/store/chat-store";
 import DeleteIcon from "@/app/static/icons/delete.svg";
 

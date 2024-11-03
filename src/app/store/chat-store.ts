@@ -75,7 +75,7 @@ function createChatSession(dialog?: {
     ],
     clearContextIndex: undefined,
     config: {
-      aiVersion: AIVersion.GLM_3_5_TURBO,
+      aiVersion: AIVersion.GLM_4_FLASH,
     },
   };
 }
