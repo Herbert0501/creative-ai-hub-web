@@ -98,12 +98,12 @@ export default function DialogMessagesActions(props: {
           style={{ width: 160 }}
           options={[
             { value: AIVersion.GLM_4_FLASH, label: AIVersion.GLM_4_FLASH },
-            { value: AIVersion.GLM_4_AIR, label: AIVersion.GLM_4_AIR },
+            { value: AIVersion.GLM_4V_FLASH, label: AIVersion.GLM_4V_FLASH + "(新品)" },
             { value: AIVersion.GLM_4_PLUS, label: AIVersion.GLM_4_PLUS },
-            {
-              value: AIVersion.GPT_4O_MINI,
-              label: AIVersion.GPT_4O_MINI + "(推荐)",
-            },
+            { value: AIVersion.GLM_4V_PLUS, label: AIVersion.GLM_4V_PLUS },
+            { value: AIVersion.GPT_4O_MINI, label: AIVersion.GPT_4O_MINI + "(推荐)"},
+            { value: AIVersion.GPT_O1_MINI, label: AIVersion.GPT_O1_MINI + ("新品")},
+            { value: AIVersion.GPT_O1, label: AIVersion.GPT_O1 + ("新品")},
             { value: AIVersion.GPT_4O, label: AIVersion.GPT_4O },
             { value: AIVersion.GPT_4, label: AIVersion.GPT_4 },
             { value: AIVersion.DALL_E_2, label: AIVersion.DALL_E_2 },
